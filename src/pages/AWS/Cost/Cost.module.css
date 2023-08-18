@@ -1,0 +1,101 @@
+@font-face {
+  font-family: MyFont;
+  src: url('../../../data/Ember/AmazonEmber_Bd.ttf');
+}
+@font-face {
+  font-family: MyNewFont1;
+  src: url('../../../data/Ember/AmazonEmber_He.ttf');
+}
+@font-face {
+  font-family: MyNewFont2;
+  src: url('../../../data/Ember/AmazonEmber_Lt.ttf');
+}
+
+.Total {
+  display: flex;
+  width: 100%;
+}
+
+.price{
+	font-family:MyFont ;
+	font-size: 30px;
+}
+
+.header{
+
+	background-color: #fafafa;
+	padding: 10px;
+	font-weight: bold;
+	font-family: MyFont;
+}
+.Summary {
+  flex: 70%;
+/*  background-color: #f7f7f7;*/
+  padding: 10px;
+}
+
+.Filter {
+  flex: 30%;
+/*  background-color: #eaeaea;*/
+  padding: 10px;
+}
+
+.box{
+
+  width: 80%;
+  height: 220px;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+/*  padding: 10px;*/
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+.total2{
+
+	display: flex;
+
+}
+.current{
+	flex: 50%;
+	font-family:MyNewFont1 ;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+}
+.forecast{
+	flex: 50%;
+	font-family:MyNewFont1 ;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.calendar {
+  max-width: 300px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.font2{
+
+	font-family: MyNewFont2;
+	font-size: 20px;
+}
+
+.graph{
+
+	padding: 20px;
+	margin-top: 20px;
+	width: 70%;
+	height: 400px;
+}

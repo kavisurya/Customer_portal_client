@@ -1,0 +1,37 @@
+.loadingcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+  }
+  
+  .dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #3498db; /* You can change the color */
+    margin: 0 5px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  .dot1 {
+    animation-delay: 0s;
+  }
+  
+  .dot2 {
+    animation-delay: 0.5s;
+  }
+  
+  .dot3 {
+    animation-delay: 1s;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+  

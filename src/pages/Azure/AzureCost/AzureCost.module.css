@@ -1,0 +1,15 @@
+.sub {
+    background-color: #cad8d3;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border: none;
+    color: rgb(9, 0, 0);
+    padding: 10px;
+    
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    
+    border-radius: 12px;
+  }

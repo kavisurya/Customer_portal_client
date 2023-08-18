@@ -1,0 +1,19 @@
+{s3data?.bucket?.map((i) => {
+
+    	return (
+
+    		<Tree content={i.name} type="Bucket" open style={typeStyles}>
+    		{i.contents.length>0 && i.contents.map((j) => {
+
+    			return (
+
+    				<Tree content={j.key} />
+
+    				)
+    		}) }
+    		</Tree> 
+
+    		 <TreeComponent data={data} />
+
+    		)
+    })}
