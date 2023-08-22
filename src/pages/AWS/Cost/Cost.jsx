@@ -4,6 +4,7 @@ import { useGlobalContext } from '../../../contexts/context2'
 import axios from 'axios';
 import Plot from 'react-plotly.js';
 import moment from "moment";
+import { Loading } from '../../../components';
 import styles from './Cost.module.css';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import {CircularProgress,IconButton,Divider,Button,MenuItem,Chip,TextField} from '@mui/material';
@@ -16,6 +17,7 @@ const Cost = () => {
 const {awscred,date,baseurl} = useGlobalContext()
 const [firstDate,setFirstDate] = useState('')
 const [secondDate,setSecondDate] = useState('')
+const [load, setLoad] = useState(true);
 const [cost,setCost] = useState([])
 const [currentcost,setCurrentcost] = useState(NaN)
 const [graphy,setGraphy] = useState([])
@@ -223,6 +225,9 @@ console.log(firstday)
       })
       .catch(function (error) {
         console.log(error)
+      }).finally(() => {
+        setLoad(false)
+        console.log('Experiment completed');
       });
 
 
@@ -444,7 +449,7 @@ setServiceCost(reducedServiceCostsArray)
       ) : (
         <h4>{`${firstDate} to ${secondDate} `}</h4>
       )}
-    		<h1 className={styles.price}>${currentcost}</h1>
+    		<h1 className={styles.price}>{load ?<Loading />:'$'+ currentcost}</h1>
     		</div>
     		<Divider orientation="vertical" flexItem />
     		<div className={styles.forecast}>

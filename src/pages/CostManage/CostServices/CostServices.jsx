@@ -38,14 +38,14 @@ const handleConnect = (e) => {
 	{
 	
 	console.log(e)
-	setAwscred({accesskey:e.name,secret:e.password,region:e.url})
+	setAwscred({accesskey:e?.name,secret:e?.password,region:e?.url})
 	navigate('/Cost')
 	}
 	else if(e.connector === 'Azure')
 	{
 		
 	console.log(e)
-	setAzurecred({subscription:e.url,tenant:e.tenant,clientid:e.name,clientsecret:e.password})
+	setAzurecred({subscription:e?.url,tenant:e?.tenant,clientid:e?.name,clientsecret:e?.password})
 	console.log(e)
 	navigate('/AzureCost')
 	}
@@ -78,7 +78,7 @@ const handleConnect = (e) => {
 	return(
 
 		<div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-   <Header  title={service12.name} bread={[{value:"Dashboard",nav:"dashboard"},{value:"Services",nav:"Services"}]} />
+   <Header  title={service12?.name} bread={[{value:"Dashboard",nav:"dashboard"},{value:"Services",nav:"Services"}]} />
    
    <div className='App'>
         <div className="flex m-3 flex-wrap  gap-3 ">

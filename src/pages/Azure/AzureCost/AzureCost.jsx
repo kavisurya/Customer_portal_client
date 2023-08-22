@@ -4,7 +4,8 @@ import { useStateContext } from '../../../contexts/context'
 import { Header } from '../../../components';
 import { Loading } from '../../../components';
 import axios from 'axios';
-import {CircularProgress} from '@mui/material';
+import {Popover,Typography,CircularProgress} from '@mui/material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Plot from 'react-plotly.js';
 import Subscription from '../../../data/subscription.svg';
 import styles from './AzureCost.module.css';
@@ -20,6 +21,30 @@ const AzureCost = () => {
     const [graphval,setGraphval] = useState({graphval1:[],graphval2:[]})
     const [graphval2,setGraphval2] = useState([])
 	const { currentColor ,handleClose,isClicked,activeMenu} = useStateContext();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const period = [{
+        header:'Quick Check',
+        subheader:{
+            val1:'Last 7 days',
+            val2:'Last 15 days',
+            val3:'Last 30 days'
+        }
+    },{
+        header:'Custom Check',
+        subheader:{
+            val1:'Custom date range'
+        }
+    }]
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+    const handlePopoverOpen = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handlePopoverClose = () => {
+      setAnchorEl(null);
+    };
 
     const graphdata = [
         {
@@ -178,9 +203,42 @@ console.log(error)
     return (
         <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
         <Header  title="AzureCost" bread={[{value:"Dashboard",nav:"dashboard"},{value:"Azure",nav:"Azure"},{value:"AzureCost",nav:"AzureCost"}]}  />
+        <Popover
+        id={id}
+        open={anchorEl}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        anchorOrigin={{
+          vertical: 'right',
+          horizontal: 180,
+        }}
+      >
+       <div className='p-5'>
+        {period.map((i) => {
+
+            return (
+                <div className='p-2'>
+                <p className='font-bold text-lg font-sans'>{i.header}</p>
+                <div className='text-slate-400 ml-5 font-mono'>
+                    <p>{i.subheader?.val1}</p>
+                    <p>{i.subheader?.val2}</p>
+                    <p>{i.subheader?.val3}</p>
+                </div>
+                </div>
+            )
+        })}
+       </div>
+      </Popover>
+        <div className='flex gap-10 items-center'>
         <div className='flex items-center bg-slate-50 rounded-lg p-3 w-1/6' >
             <img src={Subscription} alt='key' width='25px' height='25px' />
             <p>Free Trial</p>
+        </div >
+        <div className='flex items-center bg-gray-100 rounded-3xl p-3 w-1/6 gap-3 cursor-pointer hover:bg-blue-100' onClick={handlePopoverOpen}>
+        <CalendarMonthIcon />
+        <p>Invoice</p>
+        </div>
+
         </div>
         <div className='m-2 flex'>
         <div className='mr-9'>

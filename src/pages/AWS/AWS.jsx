@@ -87,7 +87,7 @@ const handleConnect = (e) => {
 
 	setOpen(true)
 	console.log(e)
-	setAwscred({accesskey:e.name,secret:e.password,region:e.url})
+	setAwscred({accesskey:e?.name,secret:e?.password,region:e?.url})
 	
 }
 
@@ -132,7 +132,7 @@ axios.get(`http://${baseurl}/action/aws`)
 
         			<div className={styles.container} onClick={() => handleServices(i)}>
 				    <img src={i.img} alt='S3' width='50px' height='50px' />
-				    <p>{i.name}</p>
+				    <p>{i?.name}</p>
 				     </div>
 
         			)
