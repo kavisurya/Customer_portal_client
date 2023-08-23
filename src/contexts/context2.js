@@ -16,7 +16,7 @@ const AppProvider = ({ children }) => {
   const [date,setDate] = useState(new Date())
   const [users,setUsers] = useState([])
 
-  const [baseurl,setBaseurl] = useState('localhost:5000')
+  const [baseurl,setBaseurl] = useState('4.240.106.69:5000')
   const [status,setStatus] = useState(false)
   const [token,setToken] = useState(null)
   const [customer,setCustomer] = useState(null)
