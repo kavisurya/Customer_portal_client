@@ -4,6 +4,8 @@ import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, Fi
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import { FaAws,FaQuora } from "react-icons/fa";
 import { VscAzure } from "react-icons/vsc";
+import { GiTakeMyMoney } from "react-icons/gi";
+import { GrMoney } from "react-icons/gr";
 import { BiColorFill } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
@@ -495,7 +497,11 @@ export const links = [
       },
       {
         name: 'CostManagement',
-        icon: <IoMdContacts />,
+        icon: <GiTakeMyMoney />,
+      },
+      {
+        name: 'Finance',
+        icon: <GrMoney />,
       }
       
     ],

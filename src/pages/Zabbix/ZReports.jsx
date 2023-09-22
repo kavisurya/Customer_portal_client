@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import { useGlobalContext } from '../../contexts/context2'
 import {useParams,useNavigate} from 'react-router-dom'
+
 import LoadingButton from '@mui/lab/LoadingButton';
 import {CircularProgress} from '@mui/material';
 import {Container,Button,Typography,Grid,FormControl,Select,Menu,MenuItem,InputLabel,Avatar,InputAdornment,TextField,IconButton,Modal} from '@mui/material';
@@ -18,16 +19,20 @@ import Plot from 'react-plotly.js';
 const ZReports = () => {
 
 	const {token,link,customer,baseurl} = useGlobalContext()
+  
 const navigate = useNavigate()
 const [host,setHost] = useState()
 const [tservice,setTService] = useState()
+const [disabled,setDisabled] = useState(true)
 const [mservice,setMService] = useState()
 const [clicked,setClicked] = useState(false)
 const [average,setAverage] = useState(99)
 const [average2,setAverage2] = useState(99)
 const [load, setLoad] = useState(true);
-  const [value, setValue] = React.useState(dayjs('2023-07-01'));
-  const [value2, setValue2] = React.useState(dayjs('2023-07-31'));
+  const [from, setFrom] = React.useState('');
+  const [to, setTo] = React.useState('');
+  const [from1, setFrom1] = React.useState('');
+  const [to1, setTo1] = React.useState('');
 
   // const handleDateChange = (date) => {
   //   setSelectedDate(date);
@@ -77,6 +82,10 @@ const [service2, setService2] = useState({
   MAABWDEVDISP: [],
   MAABODEVHTTP: [],
   MAABWDEVMSG: [],
+  MAASOLPRDAPP1: [],
+  MAASOLPRDAPP2: [],
+  MAASOLPRDDB1: [],
+  MAASOLPRDDB2: [],
 });
 
 
@@ -143,32 +152,50 @@ const layout2 = {
   title: 'Services Availability'
 };
 
+const converttoUnix=(val) => {
 
-const handleDate=(data) => {
 
-if(data?.direction === 'from')
-{   
-  console.log(data?.value.$d)
-  const dateObj = new Date(data?.value.$d);
+  const dateObj = new Date(val);
 
 // Get the Unix timestamp (time in milliseconds since January 1, 1970)
 const unixTimestamp = dateObj.getTime();
-setValue(unixTimestamp)
+return unixTimestamp/1000
 
-console.log(unixTimestamp);
+}
+const handleDate=(data) => {
+
+  
+
+if(data?.direction === 'from')
+{   
+
+  let newval = converttoUnix(data?.value.$d)
+  setFrom(newval)
+  setFrom1(data?.value.$d)
+//   console.log(data?.value.$d)
+//   const dateObj = new Date(data?.value.$d);
+
+// // Get the Unix timestamp (time in milliseconds since January 1, 1970)
+// const unixTimestamp = dateObj.getTime();
+// setFrom(unixTimestamp/1000)
+
+console.log(newval);
 
 
 }
 if(data?.direction === 'to')
 {   
-  console.log(data?.value.$d)
-  const dateObj = new Date(data?.value.$d);
+  let newval = converttoUnix(data?.value.$d)
+  setTo(newval)
+  setTo1(data?.value.$d)
+//   console.log(data?.value.$d)
+//   const dateObj = new Date(data?.value.$d);
 
-// Get the Unix timestamp (time in milliseconds since January 1, 1970)
-const unixTimestamp = dateObj.getTime();
-setValue2(unixTimestamp)
+// // Get the Unix timestamp (time in milliseconds since January 1, 1970)
+// const unixTimestamp = dateObj.getTime();
+// setFrom(unixTimestamp/1000)
 
-console.log(unixTimestamp);
+console.log(newval);
 
 }
 
@@ -177,222 +204,235 @@ console.log(unixTimestamp);
 
 useEffect(() => {
 
-  if(customer === "Tanmiah")
-    {
-      requestBody3 = {
-  jsonrpc: '2.0',
-  method: 'item.get',
-  params: {
-    output: ['itemid', 'name', 'key_', 'lastvalue'],
-    hostids: [
-      '10565', '10567', '10569', '10570', '10571', '10572', '10573', '10574', '10575',
-      '10577', '10578', '10579', '10580', '10581', '10582', '10587', '10596'
-    ],
-    selectTags: ['tag', 'value'],
-    evaltype: 0,
-    tags: [
-      { tag: 'Application', value: 'SAP', operator: 0 },
-      { tag: 'Application', value: 'SQL', operator: 0 }
-    ],
-    
-  },
-  auth: token,
-  id: 1
+setLoad(true)
+
+if(customer === "Tanmiah")
+{
+  requestBody3 = {
+jsonrpc: '2.0',
+method: 'item.get',
+params: {
+output: ['itemid', 'name', 'key_', 'lastvalue'],
+hostids: [
+  '10565', '10567', '10569', '10570', '10571', '10572', '10573', '10574', '10575',
+  '10577', '10578', '10579', '10580', '10581', '10582', '10587', '10596'
+],
+selectTags: ['tag', 'value'],
+evaltype: 0,
+tags: [
+  { tag: 'Application', value: 'SAP', operator: 0 },
+  { tag: 'Application', value: 'SQL', operator: 0 }
+],
+
+},
+auth: token,
+id: 1
 };
 
-  requestBody4 = {
-  jsonrpc: "2.0",
-  method: "trend.get",
-  params: {
-    output: "extend",
-    itemids: [
-      "53122", "53120", "53104", "53154", "53167", "53116", "53125", "53115",
-      "53132", "53128", "53118", "53110", "53113", "53108", "53106", "53130", "53152"
-    ],
-    time_from: "1688195047",
-    time_till:"1690787047",
-  },
-  id: 1,
-  auth: token,
+requestBody4 = {
+jsonrpc: "2.0",
+method: "trend.get",
+params: {
+output: "extend",
+itemids: [
+  "53122", "53120", "53104", "53154", "53167", "53116", "53125", "53115",
+  "53132", "53128", "53118", "53110", "53113", "53108", "53106", "53130", "53152"
+],
+time_from: from ? from : '1693566435',
+time_till:to?to:'1695208035',
+},
+id: 1,
+auth: token,
 };
 
-    }
-    else{
+}
+else{
 
-     requestBody3 = {
-  jsonrpc: '2.0',
-  method: 'item.get',
-  params: {
-    output: ['itemid', 'name', 'key_', 'lastvalue'],
-    hostids: [
-      '10586', '10588', '10589', '10590', '10591', '10592', '10593', '10594', '10595',
-      '10584', '10585'],
-    selectTags: ['tag', 'value'],
-    evaltype: 0,
-    tags: [
-      { tag: 'Application', value: 'SAP', operator: 0 },
-      { tag: 'Application', value: 'SQL', operator: 0 }
-    ],
-    
-  },
-  auth: token,
-  id: 1
+ requestBody3 = {
+jsonrpc: '2.0',
+method: 'item.get',
+params: {
+output: ['itemid', 'name', 'key_', 'lastvalue'],
+hostids: [
+  '10586', '10588', '10589', '10590', '10591', '10592', '10593', '10594', '10595',
+  '10584', '10585'],
+selectTags: ['tag', 'value'],
+evaltype: 0,
+tags: [
+  { tag: 'Application', value: 'SAP', operator: 0 },
+  { tag: 'Application', value: 'SQL', operator: 0 }
+],
+
+},
+auth: token,
+id: 1
 };
 
-  requestBody4 = {
-  jsonrpc: "2.0",
-  method: "trend.get",
-  params: {
-    output: "extend",
-    itemids: [
-    '53084', '53082', '53101', '53081', '53074', '53070', '53100', '53069', '53085', '53083',
-    '53072', '53102', '53097', '53099', '53071', '53086', '53096', '53095', '53098'
+requestBody4 = {
+jsonrpc: "2.0",
+method: "trend.get",
+params: {
+output: "extend",
+itemids: [
+'53084', '53082', '53101', '53081', '53074', '53070', '53100', '53069', '53085', '53083',
+'53072', '53102', '53097', '53099', '53071', '53086', '53096', '53095', '53098','60414','60417'
+,'60415','60416'
 ]
 ,
-    time_from: "1688195047",
-    time_till:"1690787047",
-  },
-  id: 1,
-  auth: token,
+time_from: from ? from : '1693566435',
+time_till:to?to:'1695208035',
+},
+id: 1,
+auth: token,
 };
 
-    }
- 
-      
+}
+
+  
 
 const newbody = {
-  
-  content:requestBody3,
-  header: { 'Content-Type': 'application/json-rpc' },
-  url: link,
+
+content:requestBody3,
+header: { 'Content-Type': 'application/json-rpc' },
+url: link,
 };
 
 const newbody2 = {
-  
-  content:requestBody4,
-  header: { 'Content-Type': 'application/json-rpc' },
-  url: link,
+
+content:requestBody4,
+header: { 'Content-Type': 'application/json-rpc' },
+url: link,
 };
 
 
 
-  axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody)
-      .then(function (response) {
+axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody)
+  .then(function (response) {
 
-        const newarr = response.data.result.result.map((i) => {
+    const newarr = response.data.result.result.map((i) => {
 
-          return {
-            itemid:i.itemid,
-            host:i.name.split('-').slice(0,-1).join(''),
-            name:i.name,
-            key:i.key_
+      return {
+        itemid:i.itemid,
+        host:i.name.split('-').slice(0,-1).join(''),
+        name:i.name,
+        key:i.key_
 
-          }
-        })
-        newarr.sort((a, b) => {
-  if (a.host < b.host) {
-    return -1;
-  } else if (a.host > b.host) {
-    return 1;
-  } else {
-    return a.id - b.id;
-  }
+      }
+    })
+    newarr.sort((a, b) => {
+if (a.host < b.host) {
+return -1;
+} else if (a.host > b.host) {
+return 1;
+} else {
+return a.id - b.id;
+}
 });
 
-        let lastCategory = null;
+    let lastCategory = null;
 
 
 const newRows = newarr.map((row) => {
-    if (row.host !== lastCategory) {
-      lastCategory = row.host;
-      return row;
-    } else {
-      return { ...row, host: '' };
-    }
+if (row.host !== lastCategory) {
+  lastCategory = row.host;
+  return row;
+} else {
+  return { ...row, host: '' };
+}
+});
+    setTService(newRows)
+    console.log(newRows)
+  
+  })
+  .catch(function (error) {
+    console.log(error)
   });
-        setTService(newRows)
-        console.log(newRows)
-      
-      })
-      .catch(function (error) {
-        console.log(error)
-      });
 
 
-  axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody2)
-      .then(function (response) {
-        
-        console.log(response.data.result)
-        const data = response?.data?.result?.result;
+axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody2)
+  .then(function (response) {
+    
+    console.log(response.data.result)
+    const data = response?.data?.result?.result;
 
 //         const data = Object.values(data2.reduce((acc, item) => {
 //   acc[item.clock] = item;
 //   return acc;
 // }, {}));
-        console.log(data)
-        if(customer === "Tanmiah")
+    console.log(data)
+    if(customer === "Tanmiah")
 
-        {
-          setService1(prevState => ({
-  ...prevState,
-  SPFPODEVJAVA: data.filter((i) => i.itemid === '53122'),
-  SPFPODEVDISPATCHER: data.filter((i) => i.itemid === '53120'),
-  SPFDMSDEVDMS: data.filter((i) => i.itemid === '53104'),
-  SPFMRNADEVSQL: data.filter((i) => i.itemid === '53154'),
-  SPFPOWBISQL: data.filter((i) => i.itemid === '53167'),
-  SPFPODEVNIMSH: data.filter((i) => i.itemid === '53116'),
-  SPFDMSPRDDMS: data.filter((i) => i.itemid === '53125'),
-  SPFPOPRDSMTP: data.filter((i) => i.itemid === '53115'),
-  SPFECCDEVDISPATCHER: data.filter((i) => i.itemid === '53132'),
-  SPFECCDEVGATEWAY: data.filter((i) => i.itemid === '53128'),
-  SPFPODEVGATEWAY: data.filter((i) => i.itemid === '53118'),
-  SPFPOPRDGATEWAY: data.filter((i) => i.itemid === '53110'),
-  SPFPOPRDJAVA: data.filter((i) => i.itemid === '53113'),
-  SPFPOPRDDISP: data.filter((i) => i.itemid === '53108'),
-  SPFPOPRDNIMSH: data.filter((i) => i.itemid === '53106'),
-  SPFECCDEVNIMSH: data.filter((i) => i.itemid === '53130'),
-  SPFMRNAPRDSQL: data.filter((i) => i.itemid === '53152'),
+    {
+      setService1(prevState => ({
+...prevState,
+SPFPODEVJAVA: data.filter((i) => i.itemid === '53122'),
+SPFPODEVDISPATCHER: data.filter((i) => i.itemid === '53120'),
+SPFDMSDEVDMS: data.filter((i) => i.itemid === '53104'),
+SPFMRNADEVSQL: data.filter((i) => i.itemid === '53154'),
+SPFPOWBISQL: data.filter((i) => i.itemid === '53167'),
+SPFPODEVNIMSH: data.filter((i) => i.itemid === '53116'),
+SPFDMSPRDDMS: data.filter((i) => i.itemid === '53125'),
+SPFPOPRDSMTP: data.filter((i) => i.itemid === '53115'),
+SPFECCDEVDISPATCHER: data.filter((i) => i.itemid === '53132'),
+SPFECCDEVGATEWAY: data.filter((i) => i.itemid === '53128'),
+SPFPODEVGATEWAY: data.filter((i) => i.itemid === '53118'),
+SPFPOPRDGATEWAY: data.filter((i) => i.itemid === '53110'),
+SPFPOPRDJAVA: data.filter((i) => i.itemid === '53113'),
+SPFPOPRDDISP: data.filter((i) => i.itemid === '53108'),
+SPFPOPRDNIMSH: data.filter((i) => i.itemid === '53106'),
+SPFECCDEVNIMSH: data.filter((i) => i.itemid === '53130'),
+SPFMRNAPRDSQL: data.filter((i) => i.itemid === '53152'),
 }));
-        }
-        else{
+    }
+    else{
 
-           setService2(prevState => ({
-  ...prevState,
-  MAAECCPRDDISP: data.filter((i) => i.itemid === '53084'),
-  MAABWPRDGW: data.filter((i) => i.itemid === '53082'),
-  MAAECCHNADEVIDX: data.filter((i) => i.itemid === '53101'),
-  MAABWPRDDISP: data.filter((i) => i.itemid === '53081'),
-  MAABOPRDHTTP: data.filter((i) => i.itemid === '53074'),
-  MAABWHNAPRDIDX: data.filter((i) => i.itemid === '53070'),
-  MAABWHNADEVIDX: data.filter((i) => i.itemid === '53100'),
-  MAABOHNAPRDIDX: data.filter((i) => i.itemid === '53069'),
-  MAAECCPRDGW: data.filter((i) => i.itemid === '53085'),
-  MAABWPRDMSG: data.filter((i) => i.itemid === '53083'),
-  MAAHNAPRDSYSTEMDB: data.filter((i) => i.itemid === '53072'),
-  MAAECCHNAQASIDX: data.filter((i) => i.itemid === '53102'),
-  MAABWDEVGW: data.filter((i) => i.itemid === '53097'),
-  MAABOHNADEVIDX: data.filter((i) => i.itemid === '53099'),
-  MAAHNAPRDIDX: data.filter((i) => i.itemid === '53071'),
-  MAAECCPRDMSG: data.filter((i) => i.itemid === '53086'),
-  MAABWDEVDISP: data.filter((i) => i.itemid === '53096'),
-  MAABODEVHTTP: data.filter((i) => i.itemid === '53095'),
-  MAABWDEVMSG: data.filter((i) => i.itemid === '53098'),
+       setService2(prevState => ({
+...prevState,
+MAAECCPRDDISP: data.filter((i) => i.itemid === '53084'),
+MAABWPRDGW: data.filter((i) => i.itemid === '53082'),
+MAAECCHNADEVIDX: data.filter((i) => i.itemid === '53101'),
+MAABWPRDDISP: data.filter((i) => i.itemid === '53081'),
+MAABOPRDHTTP: data.filter((i) => i.itemid === '53074'),
+MAABWHNAPRDIDX: data.filter((i) => i.itemid === '53070'),
+MAABWHNADEVIDX: data.filter((i) => i.itemid === '53100'),
+MAABOHNAPRDIDX: data.filter((i) => i.itemid === '53069'),
+MAAECCPRDGW: data.filter((i) => i.itemid === '53085'),
+MAABWPRDMSG: data.filter((i) => i.itemid === '53083'),
+MAAHNAPRDSYSTEMDB: data.filter((i) => i.itemid === '53072'),
+MAAECCHNAQASIDX: data.filter((i) => i.itemid === '53102'),
+MAABWDEVGW: data.filter((i) => i.itemid === '53097'),
+MAABOHNADEVIDX: data.filter((i) => i.itemid === '53099'),
+MAAHNAPRDIDX: data.filter((i) => i.itemid === '53071'),
+MAAECCPRDMSG: data.filter((i) => i.itemid === '53086'),
+MAABWDEVDISP: data.filter((i) => i.itemid === '53096'),
+MAABODEVHTTP: data.filter((i) => i.itemid === '53095'),
+MAABWDEVMSG: data.filter((i) => i.itemid === '53098'),
+
+MAASOLPRDAPP1: data.filter((i) => i.itemid === '60415'),
+MAASOLPRDAPP2: data.filter((i) => i.itemid === '60414'),
+MAASOLPRDDB1: data.filter((i) => i.itemid === '60416'),
+MAASOLPRDDB2: data.filter((i) => i.itemid === '60417'),
+
 }));
 
 
 
-        }
-      
-      })
-      .catch(function (error) {
-        console.log(error)
-      });
+    }
+  
+  })
+  .catch(function (error) {
+    console.log(error)
+  }).finally(() => {
+
+    setLoad(false)
+  })
+  ;
 
 
 
 
 
-},[])
+},[from,to])
 
 //get hosts
 
@@ -406,6 +446,7 @@ const newRows = newarr.map((row) => {
     // },
     // "auth": token,
     // "id": 1
+    setLoad(true)
     if(customer === "Tanmiah")
     {
       requestBody = {
@@ -450,10 +491,13 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody)
       })
       .catch(function (error) {
         console.log(error)
-      });
+      }).finally(() => {
+
+        setLoad(false)
+      })
 
 
-	},[])
+	},[from,to])
 
 
 	useEffect(() => {
@@ -466,7 +510,9 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody)
     // },
     // "auth": token,
     // "id": 1
+    setLoad(true)
 if( customer === "Tanmiah")
+
 {
     requestBody2 = {
         jsonrpc: '2.0',
@@ -481,8 +527,8 @@ if( customer === "Tanmiah")
                    "value_max"
                ],
           itemids:['50539', '50781', '50596', '51084', '50895', '50838', '50952', '50425', '51027', '49266', '49068', '49333', '49199', '49400', '49467', '50482', '50671'],
-         time_from: "1688195047",
-         time_till:"1690787047",
+          time_from: from ? from : '1693566435',
+          time_till:to?to:'1695208035',
          
           
         },
@@ -507,8 +553,8 @@ else{
                    "value_max"
                ],
           itemids:['49534', '49712', '50114', '49779', '49913', '50047', '49846', '51141', '49601', '49645', '49980'],
-          time_from: "1688195047",
-          time_till:"1690787047",
+          time_from: from ? from : '1693566435',
+          time_till:to?to:'1695208035',
           
         },
         id: 1,
@@ -555,13 +601,13 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody2)
   HanaDevQas: data.filter((i) => i.itemid === '49980'),
           }));
 
-    setLoad(false)
+    
         }
       		
 else{
 
-  console.log(data.filter((i) => i.itemid === '50905'))
-  console.log(data.filter((i) => i.itemid === '49468'))
+  // console.log(data.filter((i) => i.itemid === '50905'))
+  // console.log(data.filter((i) => i.itemid === '49468'))
 
 
   setTanmiah(prevState => ({
@@ -587,29 +633,40 @@ else{
 
 }
       	// })
-      	setLoad(false)
+      	
       
       })
       .catch(function (error) {
         console.log(error)
-      });
+      }).finally(() => {
+
+        setLoad(false)
+      })
 
 
-	},[])
+	},[from,to])
 
 
 	const CreateValue = () => {
 
     setClicked(true)
+    
+
+
 
 			
     if(customer === "Tanmiah")
     {
 
+      
+     
+
       // console.log(tanmiah.MrnaDev)
       // console.log(tanmiah.TaxDbPrd)
       // console.log(tanmiah.PODev)
       // console.log('JIIIIIIII')
+
+
 
     CreateTable(tanmiah.Jump)
     CreateTable(tanmiah.EccQuality)
@@ -651,6 +708,18 @@ CreateTable2(service1.SPFMRNAPRDSQL);
     }
     else{
 
+       
+    // axios.get(`http://${baseurl}/action3/getfirewall`)
+    // .then(response => {
+    //     console.log('API Response:', response.data);
+    // })
+    // .catch(error => {
+    //     console.error('API Error:', error);
+    // });
+    console.log(service2.MAASOLPRDAPP2)
+    console.log(service2.MAABWDEVMSG)
+
+     
 CreateTable(maadaniyah.BPCDev);
 CreateTable(maadaniyah.HanaDevQas);
 CreateTable(maadaniyah.BoDev);
@@ -663,26 +732,42 @@ CreateTable(maadaniyah.ECCPrd);
 CreateTable(maadaniyah.WinMGMT);
 CreateTable(maadaniyah.BoPrd);
 
-
-CreateTable2(service2.MAAECCPRDDISP);
-CreateTable2(service2.MAABWPRDGW);
-CreateTable2(service2.MAAECCHNADEVIDX);
-CreateTable2(service2.MAABWPRDDISP);
-CreateTable2(service2.MAABOPRDHTTP);
-CreateTable2(service2.MAABWHNAPRDIDX);
-CreateTable2(service2.MAAECCHNADEVIDX);
-CreateTable2(service2.MAABOHNAPRDIDX);
-CreateTable2(service2.MAAECCPRDGW);
-CreateTable2(service2.MAABWPRDMSG);
-CreateTable2(service2.MAAHNAPRDSYSTEMDB);
-CreateTable2(service2.MAAECCHNAQASIDX);
-CreateTable2(service2.MAABWDEVGW);
-CreateTable2(service2.MAABOHNADEVIDX);
-CreateTable2(service2.MAAHNAPRDIDX);
-CreateTable2(service2.MAAECCPRDMSG);
-CreateTable2(service2.MAABWDEVDISP);
 CreateTable2(service2.MAABODEVHTTP);
+CreateTable2(service2.MAABOHNADEVIDX);
+CreateTable2(service2.MAABOHNAPRDIDX);
+CreateTable2(service2.MAABOPRDHTTP);
+CreateTable2(service2.MAABWDEVDISP);
 CreateTable2(service2.MAABWDEVMSG);
+CreateTable2(service2.MAABWDEVGW);
+CreateTable2(service2.MAABWHNADEVIDX);
+CreateTable2(service2.MAABWHNAPRDIDX);
+CreateTable2(service2.MAABWPRDGW);
+CreateTable2(service2.MAABWPRDDISP);
+CreateTable2(service2.MAABWPRDMSG);
+CreateTable2(service2.MAAECCHNADEVIDX);
+CreateTable2(service2.MAAECCHNAQASIDX);
+CreateTable2(service2.MAAECCPRDDISP);
+CreateTable2(service2.MAAECCPRDGW);
+CreateTable2(service2.MAAECCPRDMSG);
+CreateTable2(service2.MAAHNAPRDSYSTEMDB);
+CreateTable2(service2.MAAHNAPRDIDX);
+CreateTable2(service2.MAASOLPRDAPP2);
+CreateTable2(service2.MAASOLPRDDB1);
+CreateTable2(service2.MAASOLPRDAPP1);
+CreateTable2(service2.MAASOLPRDDB2);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 		
@@ -693,6 +778,10 @@ CreateTable2(service2.MAABWDEVMSG);
 
 	const CreateTable = (arr2) => {
 	
+    // if(arr1?.length === 12)
+    // {
+    //   setArr1([])
+    // }
 	 const countOnes = arr2.filter(value => value.value_min === "1")?.length;
 	  const totalElements = arr2.length;
 	  const percentage = ((countOnes / totalElements) * 100);
@@ -731,7 +820,7 @@ CreateTable2(service2.MAABWDEVMSG);
     arr3.push(Number(percentage.toFixed(2)))
     console.log(arr3)
     // if(arr3?.length === 17 || arr3?.length === 11)
-    if(arr3?.length === 17 || arr3?.length === 19)
+    if(arr3?.length === 17 || arr3?.length === 23)
     {
       
        const sum = arr3.reduce((accumulator, currentValue) => accumulator + currentValue);
@@ -802,23 +891,23 @@ const rows2 = tservice?.map((i,index) =>{
         
         <DatePicker
           label="From"
-          value={value}
+          value={from1}
           onChange={(newValue) => handleDate({direction:'from',value:newValue})}
         />
       
         <DatePicker
           label="To"
-          value={value2}
+          value={to1}
           onChange={(newValue) => handleDate({direction:'to',value:newValue})}
         />
       </DemoContainer>
     </LocalizationProvider>
       </div>
       </div>
-		{arr1?.length === 0 && <LoadingButton onClick={CreateValue}variant='contained' loadingPosition="start" loading={load} color='secondary'>Generate</LoadingButton>}
+		<LoadingButton onClick={CreateValue}variant='contained' loadingPosition="start" loading={load} color='secondary'>Generate</LoadingButton>
 		
    
-		{arr1?.length !==0 && <div style={{ height: 700, width: '80%',marginTop:'20px' }}>
+		{clicked && <div style={{ height: 700, width: '80%',marginTop:'20px' }}>
        <h1 style={{fontWeight:'bold',fontSize:'25px',fontFamily:'Arial, Geneva, sans-serif',marginBottom:'20px'}}>Host Availability</h1>
        <DataGrid rows={rows} columns={columns} slots={{ toolbar: GridToolbar }} />
        
@@ -826,7 +915,7 @@ const rows2 = tservice?.map((i,index) =>{
 
        
 
-       {arr3?.length !==0 &&
+       {clicked &&
        <>
         <h2 style={{fontWeight:'bold',fontSize:'15px',fontFamily:'Arial, Geneva, sans-serif',margin:'20px'}}>Average: {average.toFixed(2)}</h2>
         <div className='flex w-100 mt-20 justify-between items-center'>

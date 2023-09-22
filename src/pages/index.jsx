@@ -14,11 +14,13 @@ export { default as CostServices } from './CostManage/CostServices/CostServices'
 export { default as Instance } from './AWS/Instance/Instance';
 export { default as Hosts } from './Zabbix/Hosts';
 export { default as ZReports } from './Zabbix/ZReports';
+export { default as ZReports2 } from './Zabbix/ZReports2';
 export { default as KibanaDash } from './Kibana/KibanaDash';
 export { default as Items } from './Zabbix/Items/Item';
 export { default as Connector } from './Connectors/Connector';
 export { default as Kibana } from './Kibana/Kibana';
 export { default as Kanban } from './Kanban/Kanban';
+export { default as Finance } from './Finance/Finance';
 export { default as Users } from './Users/Users';
 export { default as Calender } from './Calender/Calender';
 export { default as Login } from './Login/Login';

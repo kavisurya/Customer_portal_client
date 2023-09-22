@@ -4,7 +4,7 @@ import { FiSettings } from 'react-icons/fi';
 
 import './App.css';
 import { Navbar, Footer, Sidebar, Theme } from './components';
-import { Dashboard,AzureVM,AzureCost,AzureMetrics,CostServices,CostManage,Kanban, Calender, Azure,Kibana, FAQ,Instance,Items,Hosts,ZReports,S3,Ansible, AWS,KibanaDash,Cost,Zabbix, Connector, Users ,Login} from './pages';
+import { Dashboard,AzureVM,Finance,AzureCost,AzureMetrics,CostServices,CostManage,Kanban, Calender, Azure,Kibana, FAQ,Instance,Items,Hosts,ZReports,ZReports2,S3,Ansible, AWS,KibanaDash,Cost,Zabbix, Connector, Users ,Login} from './pages';
 import { useStateContext } from './contexts/context';
 import { useGlobalContext } from './contexts/context2'
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -115,6 +115,7 @@ console.log(JSON.parse(localStorage.getItem('myMicData'))?.user?.stsTokenManager
                 <Route path="/connectors" element={<Connector />} />
                 <Route path="/hosts/:id" element={<Hosts />} />
                 <Route path="/zreports" element={<ZReports />} />
+                <Route path="/zreports2" element={<ZReports2 />} />
                 <Route path="/kibanadash" element={<KibanaDash />} />
                 <Route path="/item/:id" element={<Items />} />
                 <Route path="/s3" element={<S3 />} />
@@ -125,6 +126,7 @@ console.log(JSON.parse(localStorage.getItem('myMicData'))?.user?.stsTokenManager
                  <Route path="/costservices" element={<CostServices />} />
                  <Route path="/azuremetrics" element={<AzureMetrics />} />
                  <Route path="/AzureCost" element={<AzureCost />} />
+                 <Route path="/Finance" element={<Finance />} />
                 
 
                 {/* apps  */}

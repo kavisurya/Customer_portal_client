@@ -59,7 +59,14 @@ const handleMenuClick = (event) => {
   const handleSubMenuClose = (data) => {
     setAnchorEl(null);
     setCustomer(data)
-    navigate('/zreports')
+    if(data === 'Romana'|| data === 'ARA')
+    {
+      navigate('/zreports2')
+    }
+    else{
+      navigate('/zreports')
+    }
+    
     
     
     
@@ -152,6 +159,8 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixauth`,newbody)
         
        <MenuItem onClick={() => handleSubMenuClose("Tanmiah")} >Tanmiah</MenuItem>
        <MenuItem onClick={() => handleSubMenuClose("Maadaniyah")} >Maadaniyah</MenuItem>
+       <MenuItem onClick={() => handleSubMenuClose("Romana")} >Romana</MenuItem>
+       <MenuItem onClick={() => handleSubMenuClose("ARA")} >ARA</MenuItem>
 
           
        

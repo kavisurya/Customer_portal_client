@@ -23,6 +23,7 @@ const Calendarprop = () => {
           value={date}
           showNeighboringMonth={false}
           selectRange={true}
+          
         />
 
 
