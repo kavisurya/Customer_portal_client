@@ -1,0 +1,20 @@
+/* styles.module.css */
+
+/* Define the CSS class for rows with status 'active' */
+.great {
+    background-color: #9fe9a1; /* Green color */
+    color: black; /* Text color */
+    
+  }
+  .notsogreat {
+    background-color: #e6df5f; /* Green color */
+    color: black; /* Text color */
+  }
+
+  
+  /* Define the CSS class for rows with status 'inactive' */
+  .worse {
+    background-color: #e76960; /* Red color */
+    color: black; /* Text color */
+  }
+  

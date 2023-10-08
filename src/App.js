@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 
 import './App.css';
-import { Navbar, Footer, Sidebar, Theme } from './components';
+import { Navbar, Footer, Sidebar, Theme,Chatbot } from './components';
 import { Dashboard,AzureVM,Finance,AzureCost,AzureMetrics,CostServices,CostManage,Kanban, Calender, Azure,Kibana, FAQ,Instance,Items,Hosts,ZReports,ZReports2,S3,Ansible, AWS,KibanaDash,Cost,Zabbix, Connector, Users ,Login} from './pages';
 import { useStateContext } from './contexts/context';
 import { useGlobalContext } from './contexts/context2'
@@ -72,15 +72,16 @@ console.log(JSON.parse(localStorage.getItem('myMicData'))?.user?.stsTokenManager
           ):(
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-4 bottom-4" style={{ zIndex: '1000' }}>
-               <button
+               {/* <button
                 type="button"
                 onClick={() => setThemeSettings(true)}
                 style={{ background: currentColor, borderRadius: '50%' }}
                 className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
               >
-                <FiSettings />
-              </button>
 
+                <FiSettings />
+              </button> */}
+            <Chatbot />
            
           </div>
           {activeMenu ? (

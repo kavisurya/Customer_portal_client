@@ -3,6 +3,7 @@ import { useGlobalContext } from "../../contexts/context2";
 import { useParams, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { CircularProgress } from "@mui/material";
+import styles from './Zabbix.module.css';
 import {
   Container,
   Button,
@@ -40,8 +41,10 @@ const ZReports2 = () => {
   const [average, setAverage] = useState(99);
   const [average2, setAverage2] = useState(99);
   const [load, setLoad] = useState(true);
-  const [value, setValue] = React.useState(dayjs("2023-08-01"));
-  const [value2, setValue2] = React.useState(dayjs("2023-08-31"));
+  const [from, setFrom] = React.useState('');
+  const [to, setTo] = React.useState('');
+  const [from1, setFrom1] = React.useState('');
+  const [to1, setTo1] = React.useState('');
 
   let requestBody;
   let requestBody2;
@@ -64,7 +67,10 @@ const ZReports2 = () => {
     ROMSOLGW: [],
     ROMSOLSSH: [],
     ROMSOLDP: [],
-    ROMWDS4: [],
+    ROMS4PRDDP: [],
+    ROMS4HNAPRDSSH: [],
+    ROMS4HNAPRDIDX2: [],
+    ROMS4HNAPRDIDX1 : []
   });
   const [service3, setService3] = useState({
     ARASLMPRDDISP: [],
@@ -148,8 +154,8 @@ const ZReports2 = () => {
     HANADEV: [],
   });
 
-  const [arr1, setArr1] = useState([]);
-  const [arr3, setArr3] = useState([]);
+  let [arr1, setArr1] = useState([]);
+  let [arr3, setArr3] = useState([]);
 
   const data = [
     {
@@ -175,28 +181,55 @@ const ZReports2 = () => {
     title: "Services Availability",
   };
 
-  const handleDate = (data) => {
-    if (data?.direction === "from") {
-      console.log(data?.value.$d);
-      const dateObj = new Date(data?.value.$d);
+  const converttoUnix=(val) => {
 
-      // Get the Unix timestamp (time in milliseconds since January 1, 1970)
-      const unixTimestamp = dateObj.getTime();
-      setValue(unixTimestamp);
 
-      console.log(unixTimestamp);
-    }
-    if (data?.direction === "to") {
-      console.log(data?.value.$d);
-      const dateObj = new Date(data?.value.$d);
-
-      // Get the Unix timestamp (time in milliseconds since January 1, 1970)
-      const unixTimestamp = dateObj.getTime();
-      setValue2(unixTimestamp);
-
-      console.log(unixTimestamp);
-    }
-  };
+    const dateObj = new Date(val);
+  
+  // Get the Unix timestamp (time in milliseconds since January 1, 1970)
+  const unixTimestamp = dateObj.getTime();
+  return unixTimestamp/1000
+  
+  }
+  const handleDate=(data) => {
+  
+    
+  
+  if(data?.direction === 'from')
+  {   
+  
+    let newval = converttoUnix(data?.value.$d)
+    setFrom(newval)
+    setFrom1(data?.value.$d)
+  //   console.log(data?.value.$d)
+  //   const dateObj = new Date(data?.value.$d);
+  
+  // // Get the Unix timestamp (time in milliseconds since January 1, 1970)
+  // const unixTimestamp = dateObj.getTime();
+  // setFrom(unixTimestamp/1000)
+  
+  console.log(newval);
+  
+  
+  }
+  if(data?.direction === 'to')
+  {   
+    let newval = converttoUnix(data?.value.$d)
+    setTo(newval)
+    setTo1(data?.value.$d)
+  //   console.log(data?.value.$d)
+  //   const dateObj = new Date(data?.value.$d);
+  
+  // // Get the Unix timestamp (time in milliseconds since January 1, 1970)
+  // const unixTimestamp = dateObj.getTime();
+  // setFrom(unixTimestamp/1000)
+  
+  console.log(newval);
+  
+  }
+  
+  }
+  
 
   useEffect(() => {
     if (customer === "Romana") {
@@ -245,9 +278,13 @@ const ZReports2 = () => {
             '56932',
             '56924',
             '57007',
+            '60723',
+            '60721',
+            '60719',
+
           ],
-          time_from: "1688195047",
-          time_till: "1690787047",
+          time_from: from ? from : '1693566435',
+          time_till:to?to:'1695208035',
         },
         id: 1,
         auth: token,
@@ -282,8 +319,8 @@ const ZReports2 = () => {
       '56952', '56791', '56793', '56003'
  ]
  ,
-     time_from: "1690848000",
-     time_till:"1693526399",
+ time_from: from ? from : '1693566435',
+ time_till:to?to:'1695208035',
    },
    id: 1,
    auth: token,
@@ -370,7 +407,10 @@ const ZReports2 = () => {
             ROMSOLSSH: data.filter((i) => i.itemid === '56932'),
             ROMSOLDP: data.filter((i) => i.itemid === '56924'),
             // ROMSOLDP: data.filter((i) => i.itemid === '56926'),
-            ROMWDS4: data.filter((i) => i.itemid === '57007'),
+            ROMS4PRDDP: data.filter((i) => i.itemid === '57007'),
+            ROMS4HNAPRDIDX1: data.filter((i) => i.itemid === '60719'),
+            ROMS4HNAPRDIDX2: data.filter((i) => i.itemid === '60721'),
+            ROMS4HNAPRDSSH: data.filter((i) => i.itemid === '60723'),
           }));
         } else {
             setService3(prevState => ({
@@ -398,7 +438,7 @@ const ZReports2 = () => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [from,to]);
 
   useEffect(() => {
     // 	let body={
@@ -449,7 +489,7 @@ const ZReports2 = () => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [from,to]);
 
   useEffect(() => {
     // 	let body={
@@ -497,8 +537,8 @@ const ZReports2 = () => {
             '54351',
             '54418',
           ],
-          time_from: "1688195047",
-          time_till: "1690787047",
+          time_from: from ? from : '1693566435',
+          time_till:to?to:'1695208035',
         },
         id: 1,
         auth: token,
@@ -517,8 +557,8 @@ const ZReports2 = () => {
                        "value_max"
                    ],
               itemids:['50368', '54752', '54819', '54886', '54953', '55020'],
-             time_from: "1690848000",
-             time_till:"1693526399",
+              time_from: from ? from : '1693566435',
+              time_till:to?to:'1695208035',
              
               
             },
@@ -580,38 +620,46 @@ const ZReports2 = () => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [from,to]);
 
   const CreateValue = () => {
     setClicked(true);
 
     if (customer === "Romana") {
-      // console.log(tanmiah.MrnaDev)
-      // console.log(tanmiah.TaxDbPrd)
+      console.log(service1.ROMS4HNAPRDSSH)
+      console.log(service1.ROMS4HNAPRDIDX1)
       // console.log(tanmiah.PODev)
       // console.log('JIIIIIIII')
       CreateTable(romana.RomEccPrd);
       CreateTable(romana.RomHanaPrd);
       CreateTable(romana.RomNwgPrd);
       CreateTable(romana.RomSolPrd);
-      CreateTable(romana.RomWdPrd);
+      CreateTable(romana.RomWdPrd,'last');
 
       CreateTable2(service1.ROMECCDP);
       CreateTable2(service1.ROMECCHTTP);
       CreateTable2(service1.ROMECCSMTP);
-      CreateTable2(service1.ROMECCGW);
       CreateTable2(service1.ROMECCHTTPS);
+      CreateTable2(service1.ROMECCGW);
       CreateTable2(service1.ROMECCSSH);
+
       CreateTable2(service1.ROMNWGDP);
       CreateTable2(service1.ROMNWGSSH);
-      CreateTable2(service1.ROMNWGGW);
       CreateTable2(service1.ROMNWGHTTP);
-      CreateTable2(service1.ROMWDS4);
+      CreateTable2(service1.ROMNWGGW);
+
+      CreateTable2(service1.ROMS4HNAPRDSSH);
+
+      CreateTable2(service1.ROMS4HNAPRDIDX2);
+      CreateTable2(service1.ROMS4HNAPRDIDX1);
+      
+      CreateTable2(service1.ROMS4PRDDP);
+
       CreateTable2(service1.ROMSOLJAVA);
       CreateTable2(service1.ROMSOLHTTP);
       CreateTable2(service1.ROMSOLGW);
       CreateTable2(service1.ROMSOLSSH);
-      CreateTable2(service1.ROMSOLDP);
+      CreateTable2(service1.ROMSOLDP,'last');
       
 
    
@@ -622,7 +670,7 @@ const ZReports2 = () => {
         CreateTable(ara.HANAPRD);
         CreateTable(ara.NWGPRD);
         CreateTable(ara.SLMPRD);
-        CreateTable(ara.WDPRD);
+        CreateTable(ara.WDPRD,'last');
         
         CreateTable2(service3.ARAFIORIPRDHTTP);
         CreateTable2(service3.ARAFIORIPRDMSG);
@@ -646,7 +694,7 @@ const ZReports2 = () => {
        CreateTable2(service3.ARASLMPRDSSH);
        
         CreateTable2(service3.ARAWDPRDSSH);
-       CreateTable2(service3.ARAWDPRDPORT);
+       CreateTable2(service3.ARAWDPRDPORT,'last');
         
        
        
@@ -655,11 +703,17 @@ const ZReports2 = () => {
     }
   };
 
-  const CreateTable = (arr2) => {
-    const countOnes = arr2.filter((value) => value.value_min === "1")?.length;
-    const totalElements = arr2.length;
-    const percentage = (countOnes / totalElements) * 100;
-    // if(arr3?.length === 17 || arr3?.length === 11)
+  const CreateTable = (arr2,param2) => {
+	
+   
+    if(arr2.length === 0)
+    {
+      arr2 = [0,0,0]
+    }
+	 const countOnes = arr2.filter(value => value.value_min === "1")?.length;
+	  const totalElements = arr2.length;
+	  const percentage = ((countOnes / totalElements) * 100);
+	  // if(arr3?.length === 17 || arr3?.length === 11)
     // {
     //   console.log(arr2)
     //   console.log(percentage)
@@ -668,42 +722,68 @@ const ZReports2 = () => {
     //   console.log(Number(percentage.toFixed(2)))
 
     // }
-    arr1.push(Number(percentage.toFixed(2)));
-    console.log(arr1);
-    // if(arr1?.length === 17 || arr1?.length === 11)
-    if (arr1?.length === 5 || arr1?.length === 6) {
-      const sum = arr1.reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      );
-      const avge = sum / arr1?.length;
-      setAverage(avge);
+	  arr1.push(Number(percentage.toFixed(2)))
+	  // console.log(arr1)
+	  // if(arr1?.length === 17 || arr1?.length === 11)
+    if(param2 === 'last')
+	  {
+      if(customer === 'ARA')
+      {
+        setArr1(arr1.slice(-6))
+      }
+      else{
+        setArr1(arr1.slice(-5))
+      }
+      
+	  	 const sum = arr1.reduce((accumulator, currentValue) => accumulator + currentValue);
+		  const avge = sum / arr1?.length;
+      console.log(arr1.length)
+      console.log(arr1)
+		  setAverage(avge)
+	  }
 
-    }
+	}
+
+  const CreateTable2 = (arr2,param2) => {
+
     
-  };
-
-  const CreateTable2 = (arr2) => {
-    const countOnes = arr2.filter((value) => value.value_min === "1")?.length;
-    const totalElements = arr2?.length;
-    const percentage = (countOnes / totalElements) * 100;
-
-    arr3.push(Number(percentage.toFixed(2)));
-    console.log(arr3);
-    // if(arr3?.length === 17 || arr3?.length === 11)
-    if (arr3?.length === 15) {
-      const sum = arr3.reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      );
-      const avge = sum / arr3?.length;
-      setAverage2(avge);
+    if(arr2.length === 0)
+    {
+      arr2 = [0,0,0]
     }
-  };
+      
+    
+  
+   const countOnes = arr2.filter(value => value.value_min === "1")?.length;
+    const totalElements = arr2?.length;
+    const percentage = ((countOnes / totalElements) * 100);
+    
+    arr3.push(Number(percentage.toFixed(2)))
+    console.log(arr3)
+    // if(arr3?.length === 17 || arr3?.length === 11)
+    if(param2 === 'last')
+    {
+
+      if(customer === 'ARA')
+      {
+        setArr3(arr3.slice(-17))
+      }
+      else{
+        setArr3(arr3.slice(-19))
+      }
+      
+       const sum = arr3.reduce((accumulator, currentValue) => accumulator + currentValue);
+      const avge = sum / arr3?.length;
+      setAverage2(avge)
+    }
+
+  }
 
   const columns = [
     { field: "Host", headerName: "Host", width: 200 },
     { field: "Up", headerName: "Up", width: 170 },
     { field: "Down", headerName: "Down", width: 170 },
-    { field: "Unreachable", headerName: "Unreachable", width: 170 },
+    { field: "Unreachable", headerName: "Unreachable", width: 100 },
   ];
 
   const rows = host?.map((i, index) => {
@@ -712,9 +792,32 @@ const ZReports2 = () => {
       Host: i.host,
       Up: arr1[index] + "%",
       Down: (100 - arr1[index]).toFixed(2) + "%",
-      Unreachable: (100 - arr3[index]).toFixed(2),
+      Unreachable: (100 - arr1[index]).toFixed(2),
     };
   });
+
+  const getRowClassName = (params) => {
+    const Up = params.row.Up;
+  
+    const numberString = Up.replace('%', '');
+  
+    // Use parseFloat to convert the string to a number
+    const numberValue = parseFloat(numberString);
+  
+    // Define the CSS class based on the Up value
+    if (numberValue > 95) {
+      return styles.great; // You can define this CSS class in your styles
+    } else if (numberValue > 70 && numberValue < 95) {
+      return styles.notsogreat; // You can define this CSS class in your styles
+    }
+    else
+    {
+      return styles.worse
+    }
+  
+    // Default class when no condition matches
+    return '';
+  };
 
   const columns2 = [
     {
@@ -733,7 +836,7 @@ const ZReports2 = () => {
 
     { field: "Up", headerName: "Up", width: 170 },
     { field: "Down", headerName: "Down", width: 170 },
-    { field: "Unreachable", headerName: "Unreachable", width: 170 },
+    { field: "Unreachable", headerName: "Unreachable", width: 100 },
   ];
 
   const rows2 = tservice?.map((i, index) => {
@@ -749,123 +852,73 @@ const ZReports2 = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <div className="flex justify-between items-center">
-        <Header
-          title="Availability Report"
-          bread={[
-            { value: "Dashboard", nav: "dashboard" },
-            { value: "Zabbix", nav: "Zabbix" },
-          ]}
-        />
-        <div className="hello">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker", "DatePicker"]}>
-              <DatePicker
-                label="From"
-                value={value}
-                onChange={(newValue) =>
-                  handleDate({ direction: "from", value: newValue })
-                }
-              />
+    <div className='flex justify-between items-center'>
+    <Header  title="Availability Report" bread={[{value:"Dashboard",nav:"dashboard"},{value:"Zabbix",nav:"Zabbix"}]}/>
+    <div className='hello'>
+       <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <DemoContainer components={['DatePicker', 'DatePicker']}>
+      
+      <DatePicker
+        label="From"
+        value={from1}
+        onChange={(newValue) => handleDate({direction:'from',value:newValue})}
+      />
+    
+      <DatePicker
+        label="To"
+        value={to1}
+        onChange={(newValue) => handleDate({direction:'to',value:newValue})}
+      />
+    </DemoContainer>
+  </LocalizationProvider>
+    </div>
+    </div>
+  <LoadingButton onClick={CreateValue}variant='contained' loadingPosition="start" loading={load} color='secondary'>Generate</LoadingButton>
+  
+ 
+  {clicked && <div style={{ height: 400, width: '70%',marginTop:'20px' }}>
+     <h1 style={{fontWeight:'bold',fontSize:'25px',fontFamily:'Arial, Geneva, sans-serif',marginBottom:'20px'}}>Host Availability</h1>
+     <DataGrid rows={rows} columns={columns}  getRowClassName={getRowClassName} />
+     
+     </div> }
 
-              <DatePicker
-                label="To"
-                value={value2}
-                onChange={(newValue) =>
-                  handleDate({ direction: "to", value: newValue })
-                }
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        </div>
-      </div>
-      {arr1?.length === 0 && (
-        <LoadingButton
-          onClick={CreateValue}
-          variant="contained"
-          loadingPosition="start"
-          loading={load}
-          color="secondary"
-        >
-          Generate
-        </LoadingButton>
-      )}
+     
 
-      {arr1?.length !== 0 && (
-        <div style={{ height: 400, width: "80%", marginTop: "20px" }}>
-          <h1
-            style={{
-              fontWeight: "bold",
-              fontSize: "25px",
-              fontFamily: "Arial, Geneva, sans-serif",
-              marginBottom: "20px",
-            }}
-          >
-            Host Availability
-          </h1>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            slots={{ toolbar: GridToolbar }}
-          />
-        </div>
-      )}
+     {clicked &&
+     <>
+      <h2 style={{fontWeight:'bold',fontSize:'15px',fontFamily:'Arial, Geneva, sans-serif',margin:'20px'}}>Average: {average.toFixed(2)}</h2>
+      <div className='flex w-100 mt-20 justify-between items-center'>
+     {clicked && <Plot
+    data={data}
+    layout={layout}
+  />
+} 
 
-      {arr3?.length !== 0 && (
-        <>
-          <h2
-            style={{
-              fontWeight: "bold",
-              fontSize: "15px",
-              fontFamily: "Arial, Geneva, sans-serif",
-              margin: "20px",
-            }}
-          >
-            Average: {average.toFixed(2)}
-          </h2>
-          <div className="flex w-100 mt-20 justify-between items-center">
-            {clicked && <Plot data={data} layout={layout} />}
-          </div>
-          <h1
-            style={{
-              fontWeight: "bold",
-              fontSize: "25px",
-              fontFamily: "Arial, Geneva, sans-serif",
-              marginBottom: "20px",
-            }}
-          >
-            Services Availability
-          </h1>
-        </>
-      )}
+  </div>
+   <h1 style={{fontWeight:'bold',fontSize:'25px',fontFamily:'Arial, Geneva, sans-serif',marginBottom:'20px'}}>Services Availability</h1>
+     </>   }
+     
+  {arr3?.length !==0 && <div style={{ height: 900, width: '85%',marginTop:'20px' }}>
+   
+     <DataGrid rows={rows2} columns={columns2}  getRowClassName={getRowClassName}/>
+     
+     </div> }
 
-      {arr3?.length !== 0 && (
-        <div style={{ height: 900, width: "85%", marginTop: "20px" }}>
-          <DataGrid
-            rows={rows2}
-            columns={columns2}
-            slots={{ toolbar: GridToolbar }}
-          />
-        </div>
-      )}
+     {arr3?.length !==0 && <h2 style={{fontWeight:'bold',fontSize:'15px',fontFamily:'Arial, Geneva, sans-serif',marginLeft:'20px',marginTop:'-40px'}}>Average: {average2.toFixed(2)}</h2> }
+     
 
-      {arr3?.length !== 0 && (
-        <h2
-          style={{
-            fontWeight: "bold",
-            fontSize: "15px",
-            fontFamily: "Arial, Geneva, sans-serif",
-            marginLeft: "20px",
-            marginTop: "-40px",
-          }}
-        >
-          Average: {average2.toFixed(2)}
-        </h2>
-      )}
+     <div className='flex w-100 mt-20 justify-between items-center'>
+    
+{clicked && <Plot
+    data={data2}
+    layout={layout2}
+  />
+} 
+  </div>
 
-      <div className="flex w-100 mt-20 justify-between items-center">
-        {clicked && <Plot data={data2} layout={layout2} />}
-      </div>
+
+    
+  
     </div>
   );
 };

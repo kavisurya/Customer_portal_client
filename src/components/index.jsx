@@ -11,6 +11,7 @@ export { default as UserProfile } from './UserProfile';
 export { default as Calenderprop } from './Calenderprop';
 export { default as Header } from './Header';
 export { default as SparkLine } from './Charts/SparkLine';
+export { default as Chatbot } from './Chatbot/Chatbot';
 export { default as LineChart } from './Charts/LineChart';
 export { default as Stacked } from './Charts/Stacked';
 export { default as Pie } from './Charts/Pie';

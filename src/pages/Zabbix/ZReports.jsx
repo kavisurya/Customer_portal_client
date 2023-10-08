@@ -1,13 +1,15 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useRef,createRef} from 'react'
 import { useGlobalContext } from '../../contexts/context2'
 import {useParams,useNavigate} from 'react-router-dom'
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {CircularProgress} from '@mui/material';
 import {Container,Button,Typography,Grid,FormControl,Select,Menu,MenuItem,InputLabel,Avatar,InputAdornment,TextField,IconButton,Modal} from '@mui/material';
 import axios from 'axios'
 import dayjs from 'dayjs';
-
+import styles from './Zabbix.module.css';
+import { useScreenshot, createFileName } from "use-react-screenshot";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -34,6 +36,24 @@ const [load, setLoad] = useState(true);
   const [from1, setFrom1] = React.useState('');
   const [to1, setTo1] = React.useState('');
 
+  const set1 = useRef(null);
+  const set2 = useRef(null);
+
+  const ref = createRef(null);
+  const [image, takeScreenShot] = useScreenshot({
+    type: "image/jpeg",
+    quality: 1.0
+  });
+
+  const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+
   // const handleDateChange = (date) => {
   //   setSelectedDate(date);
   // };
@@ -45,43 +65,31 @@ let requestBody4
 const arr33 = [100,100,99,100,98,100,100,100,100,100,100]
 const [service1, setService1] = useState({
   SPFMRNAPRDSQL: [],
-  SPFECCDEVNIMSH: [],
   SPFPOPRDNIMSH: [],
   SPFPOPRDDISP: [],
   SPFPOPRDJAVA: [],
   SPFPOPRDGATEWAY: [],
-  SPFPODEVGATEWAY: [],
-  SPFECCDEVGATEWAY: [],
-  SPFECCDEVDISPATCHER: [],
   SPFPOPRDSMTP: [],
   SPFDMSPRDDMS: [],
-  SPFPODEVNIMSH: [],
   SPFPOWBISQL: [],
-  SPFMRNADEVSQL: [],
-  SPFDMSDEVDMS: [],
-  SPFPODEVDISPATCHER: [],
-  SPFPODEVJAVA: [],
+ 
 });
 const [service2, setService2] = useState({
   MAAECCPRDDISP: [],
   MAABWPRDGW: [],
-  MAAECCHNADEVIDX: [],
   MAABWPRDDISP: [],
   MAABOPRDHTTP: [],
   MAABWHNAPRDIDX: [],
-  MAAECCHNADEVIDX: [],
   MAABOHNAPRDIDX: [],
+  MAAHNAPRDSSH: [],
+  MAAHNAPRDBIDX1 : [],
+  MAAHNAPRDBIDX2 : [],
+  MAAHNAPRDBIDX3 : [],
   MAAECCPRDGW: [],
   MAABWPRDMSG: [],
   MAAHNAPRDSYSTEMDB: [],
-  MAAECCHNAQASIDX: [],
-  MAABWDEVGW: [],
-  MAABOHNADEVIDX: [],
   MAAHNAPRDIDX: [],
   MAAECCPRDMSG: [],
-  MAABWDEVDISP: [],
-  MAABODEVHTTP: [],
-  MAABWDEVMSG: [],
   MAASOLPRDAPP1: [],
   MAASOLPRDAPP2: [],
   MAASOLPRDDB1: [],
@@ -91,20 +99,12 @@ const [service2, setService2] = useState({
 
 
 const [tanmiah,setTanmiah] = useState({
-	Jump:[],
-	EccQuality:[],
-	EccDev:[],
-	TaxDev:[],
-	MrnaDev:[],
 	EY:[],
 	MrnaPrd:[],
 	APPR:[],
 	PowerBI:[],
-	PODev:[],
-	DMSDev:[],
 	POPrd:[],
 	DMSPrd:[],
-	TaxDbDev:[],
 	TaxDbPrd:[],
 	TaxPrd:[],
 	EccPrd:[]
@@ -112,7 +112,6 @@ const [tanmiah,setTanmiah] = useState({
 })
 
 const [maadaniyah, setMaadaniyah] = useState({
-  BoDev: [],
   BPCPrd: [],
   SolPrd: [],
   DMSPrd: [],
@@ -121,11 +120,9 @@ const [maadaniyah, setMaadaniyah] = useState({
   ECCPrd: [],
   WinMGMT: [],
   BoPrd: [],
-  BPCDev: [],
-  HanaDevQas: []
 });
-const [arr1,setArr1] = useState([])
-const [arr3,setArr3] = useState([])
+let [arr1,setArr1] = useState([])
+let [arr3,setArr3] = useState([])
 
 
 const data = [
@@ -150,6 +147,35 @@ const layout = {
 
 const layout2 = {
   title: 'Services Availability'
+};
+
+const exportToPDF = () => {
+  const pdf = new jsPDF('p', 'mm', 'a4');
+
+  // Convert the first element (set1.current) to a canvas
+  html2canvas(set1.current).then((canvas1) => {
+    const imgData1 = canvas1.toDataURL('image/png');
+
+    // Convert the second element (set2.current) to a canvas
+    html2canvas(set2.current).then((canvas2) => {
+      const imgData2 = canvas2.toDataURL('image/png');
+
+      // Add the first element's image to the PDF
+      pdf.addImage(imgData1, 'PNG', 10, 10, 180, 200);
+      
+      pdf.addPage();// Adjust positioning and size as needed
+
+      // Add the second element's image to the PDF below the first one
+      pdf.addImage(imgData2, 'PNG', 10, 120, 180, 250); // Adjust positioning and size as needed
+
+      // Save the PDF
+      pdf.save('data.pdf');
+    }).catch((err) => {
+      console.log(err);
+    });
+  }).catch((err) => {
+    console.log(err);
+  });
 };
 
 const converttoUnix=(val) => {
@@ -214,8 +240,8 @@ method: 'item.get',
 params: {
 output: ['itemid', 'name', 'key_', 'lastvalue'],
 hostids: [
-  '10565', '10567', '10569', '10570', '10571', '10572', '10573', '10574', '10575',
-  '10577', '10578', '10579', '10580', '10581', '10582', '10587', '10596'
+  '10572', '10573', '10574', '10575',
+   '10579', '10580', '10582', '10587', '10596'
 ],
 selectTags: ['tag', 'value'],
 evaltype: 0,
@@ -235,8 +261,8 @@ method: "trend.get",
 params: {
 output: "extend",
 itemids: [
-  "53122", "53120", "53104", "53154", "53167", "53116", "53125", "53115",
-  "53132", "53128", "53118", "53110", "53113", "53108", "53106", "53130", "53152"
+     "53167", "53125", "53115",
+     "53110", "53113", "53108", "53106", "53152"
 ],
 time_from: from ? from : '1693566435',
 time_till:to?to:'1695208035',
@@ -254,8 +280,8 @@ method: 'item.get',
 params: {
 output: ['itemid', 'name', 'key_', 'lastvalue'],
 hostids: [
-  '10586', '10588', '10589', '10590', '10591', '10592', '10593', '10594', '10595',
-  '10584', '10585'],
+   '10588', '10589', '10590', '10591', '10592', '10593',  '10595',
+  ],
 selectTags: ['tag', 'value'],
 evaltype: 0,
 tags: [
@@ -274,9 +300,9 @@ method: "trend.get",
 params: {
 output: "extend",
 itemids: [
-'53084', '53082', '53101', '53081', '53074', '53070', '53100', '53069', '53085', '53083',
-'53072', '53102', '53097', '53099', '53071', '53086', '53096', '53095', '53098','60414','60417'
-,'60415','60416'
+'53084', '53082','53081', '53074', '53070','53069', '53085', '53083',
+'53072',  '53071', '53086', '60414','60417'
+,'60415','60416','60739','60743','60741','60745'
 ]
 ,
 time_from: from ? from : '1693566435',
@@ -365,22 +391,13 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody2)
     {
       setService1(prevState => ({
 ...prevState,
-SPFPODEVJAVA: data.filter((i) => i.itemid === '53122'),
-SPFPODEVDISPATCHER: data.filter((i) => i.itemid === '53120'),
-SPFDMSDEVDMS: data.filter((i) => i.itemid === '53104'),
-SPFMRNADEVSQL: data.filter((i) => i.itemid === '53154'),
 SPFPOWBISQL: data.filter((i) => i.itemid === '53167'),
-SPFPODEVNIMSH: data.filter((i) => i.itemid === '53116'),
 SPFDMSPRDDMS: data.filter((i) => i.itemid === '53125'),
 SPFPOPRDSMTP: data.filter((i) => i.itemid === '53115'),
-SPFECCDEVDISPATCHER: data.filter((i) => i.itemid === '53132'),
-SPFECCDEVGATEWAY: data.filter((i) => i.itemid === '53128'),
-SPFPODEVGATEWAY: data.filter((i) => i.itemid === '53118'),
 SPFPOPRDGATEWAY: data.filter((i) => i.itemid === '53110'),
 SPFPOPRDJAVA: data.filter((i) => i.itemid === '53113'),
 SPFPOPRDDISP: data.filter((i) => i.itemid === '53108'),
 SPFPOPRDNIMSH: data.filter((i) => i.itemid === '53106'),
-SPFECCDEVNIMSH: data.filter((i) => i.itemid === '53130'),
 SPFMRNAPRDSQL: data.filter((i) => i.itemid === '53152'),
 }));
     }
@@ -390,28 +407,25 @@ SPFMRNAPRDSQL: data.filter((i) => i.itemid === '53152'),
 ...prevState,
 MAAECCPRDDISP: data.filter((i) => i.itemid === '53084'),
 MAABWPRDGW: data.filter((i) => i.itemid === '53082'),
-MAAECCHNADEVIDX: data.filter((i) => i.itemid === '53101'),
 MAABWPRDDISP: data.filter((i) => i.itemid === '53081'),
 MAABOPRDHTTP: data.filter((i) => i.itemid === '53074'),
 MAABWHNAPRDIDX: data.filter((i) => i.itemid === '53070'),
-MAABWHNADEVIDX: data.filter((i) => i.itemid === '53100'),
 MAABOHNAPRDIDX: data.filter((i) => i.itemid === '53069'),
 MAAECCPRDGW: data.filter((i) => i.itemid === '53085'),
 MAABWPRDMSG: data.filter((i) => i.itemid === '53083'),
 MAAHNAPRDSYSTEMDB: data.filter((i) => i.itemid === '53072'),
-MAAECCHNAQASIDX: data.filter((i) => i.itemid === '53102'),
-MAABWDEVGW: data.filter((i) => i.itemid === '53097'),
-MAABOHNADEVIDX: data.filter((i) => i.itemid === '53099'),
 MAAHNAPRDIDX: data.filter((i) => i.itemid === '53071'),
 MAAECCPRDMSG: data.filter((i) => i.itemid === '53086'),
-MAABWDEVDISP: data.filter((i) => i.itemid === '53096'),
-MAABODEVHTTP: data.filter((i) => i.itemid === '53095'),
-MAABWDEVMSG: data.filter((i) => i.itemid === '53098'),
 
 MAASOLPRDAPP1: data.filter((i) => i.itemid === '60415'),
 MAASOLPRDAPP2: data.filter((i) => i.itemid === '60414'),
 MAASOLPRDDB1: data.filter((i) => i.itemid === '60416'),
 MAASOLPRDDB2: data.filter((i) => i.itemid === '60417'),
+
+MAAHNAPRDSSH: data.filter((i) => i.itemid === '60745'),
+MAAHNAPRDBIDX1: data.filter((i) => i.itemid === '60739'),
+MAAHNAPRDBIDX2: data.filter((i) => i.itemid === '60741'),
+MAAHNAPRDBIDX3: data.filter((i) => i.itemid === '60743'),
 
 }));
 
@@ -454,7 +468,7 @@ MAASOLPRDDB2: data.filter((i) => i.itemid === '60417'),
         method: 'host.get',
         params: {
           output: ['host'], // Specify the desired output fields
-          groupids:'24', // ID of the host group
+          groupids:'26', // ID of the host group
         },
         id: 1,
         auth:token,
@@ -467,7 +481,7 @@ MAASOLPRDDB2: data.filter((i) => i.itemid === '60417'),
         method: 'host.get',
         params: {
           output: ['host'], // Specify the desired output fields
-          groupids:'32', // ID of the host group
+          groupids:'29', // ID of the host group
         },
         id: 1,
         auth:token,
@@ -526,7 +540,7 @@ if( customer === "Tanmiah")
                    "value_avg",
                    "value_max"
                ],
-          itemids:['50539', '50781', '50596', '51084', '50895', '50838', '50952', '50425', '51027', '49266', '49068', '49333', '49199', '49400', '49467', '50482', '50671'],
+          itemids:[ '50838', '50952', '50425', '51027', '49333', '49199', '49467', '50482', '50671'],
           time_from: from ? from : '1693566435',
           time_till:to?to:'1695208035',
          
@@ -552,7 +566,7 @@ else{
                    "value_avg",
                    "value_max"
                ],
-          itemids:['49534', '49712', '50114', '49779', '49913', '50047', '49846', '51141', '49601', '49645', '49980'],
+          itemids:['49712', '50114', '49779', '49913', '50047', '49846', '49601','60739','60741','60743','60745'],
           time_from: from ? from : '1693566435',
           time_till:to?to:'1695208035',
           
@@ -588,17 +602,17 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody2)
         {
           setMaadaniyah(prevState => ({
   ...prevState,
-  BoDev: data.filter((i) => i.itemid === '49534'),
+  
   BPCPrd: data.filter((i) => i.itemid === '49712'),
   SolPrd: data.filter((i) => i.itemid === '50114'),
   DMSPrd: data.filter((i) => i.itemid === '49779'),
   HanaPrdB: data.filter((i) => i.itemid === '49913'),
   HanaPrdA: data.filter((i) => i.itemid === '50047'),
   ECCPrd: data.filter((i) => i.itemid === '49846'),
-  WinMGMT: data.filter((i) => i.itemid === '51141'),
+
   BoPrd: data.filter((i) => i.itemid === '49601'),
-  BPCDev: data.filter((i) => i.itemid === '49645'),
-  HanaDevQas: data.filter((i) => i.itemid === '49980'),
+  
+  
           }));
 
     
@@ -612,20 +626,13 @@ else{
 
   setTanmiah(prevState => ({
   ...prevState,
-  Jump: data.filter((i) => i.itemid === '50539'),
-  EccQuality: data.filter((i) => i.itemid === '50781'),
-  EccDev: data.filter((i) => i.itemid === '50596'),
-  TaxDev: data.filter((i) => i.itemid === '51084'),
-  MrnaDev: data.filter((i) => i.itemid === '50895'),
+
   EY: data.filter((i) => i.itemid === '50838'),
   MrnaPrd: data.filter((i) => i.itemid === '50952'),
   APPR: data.filter((i) => i.itemid === '50425'),
   PowerBI: data.filter((i) => i.itemid === '51027'),
-  PODev: data.filter((i) => i.itemid === '49266'),
-  DMSDev: data.filter((i) => i.itemid === '49068'),
   POPrd: data.filter((i) => i.itemid === '49333'),
   DMSPrd: data.filter((i) => i.itemid === '49199'),
-  TaxDbDev: data.filter((i) => i.itemid === '49400'),
   TaxDbPrd: data.filter((i) => i.itemid === '49467'),
   TaxPrd: data.filter((i) => i.itemid === '50482'),
   EccPrd: data.filter((i) => i.itemid === '50671'),
@@ -668,41 +675,26 @@ else{
 
 
 
-    CreateTable(tanmiah.Jump)
-    CreateTable(tanmiah.EccQuality)
-    CreateTable(tanmiah.EccDev)
-    CreateTable(tanmiah.TaxDev)
-    CreateTable(tanmiah.MrnaDev)
+    
     CreateTable(tanmiah.EY)
     CreateTable(tanmiah.MrnaPrd)
     CreateTable(tanmiah.APPR)
     CreateTable(tanmiah.PowerBI)
-    CreateTable(tanmiah.PODev)
-    CreateTable(tanmiah.DMSDev)
     CreateTable(tanmiah.POPrd)
     CreateTable(tanmiah.DMSPrd)
-    CreateTable(tanmiah.TaxDbDev)
     CreateTable(tanmiah.TaxDbPrd)
     CreateTable(tanmiah.TaxPrd)
-    CreateTable(tanmiah.EccPrd)
+    CreateTable(tanmiah.EccPrd,'last')
 
-CreateTable2(service1.SPFPODEVJAVA);
-CreateTable2(service1.SPFPODEVDISPATCHER);
-CreateTable2(service1.SPFDMSDEVDMS);
-CreateTable2(service1.SPFMRNADEVSQL);
+
 CreateTable2(service1.SPFPOWBISQL);
-CreateTable2(service1.SPFPODEVNIMSH);
 CreateTable2(service1.SPFDMSPRDDMS);
 CreateTable2(service1.SPFPOPRDSMTP);
-CreateTable2(service1.SPFECCDEVDISPATCHER);
-CreateTable2(service1.SPFECCDEVGATEWAY);
-CreateTable2(service1.SPFPODEVGATEWAY);
 CreateTable2(service1.SPFPOPRDGATEWAY);
 CreateTable2(service1.SPFPOPRDJAVA);
 CreateTable2(service1.SPFPOPRDDISP);
 CreateTable2(service1.SPFPOPRDNIMSH);
-CreateTable2(service1.SPFECCDEVNIMSH);
-CreateTable2(service1.SPFMRNAPRDSQL);
+CreateTable2(service1.SPFMRNAPRDSQL,'last');
 
 
     }
@@ -720,41 +712,42 @@ CreateTable2(service1.SPFMRNAPRDSQL);
     console.log(service2.MAABWDEVMSG)
 
      
-CreateTable(maadaniyah.BPCDev);
-CreateTable(maadaniyah.HanaDevQas);
-CreateTable(maadaniyah.BoDev);
+
+
 CreateTable(maadaniyah.BPCPrd);
 CreateTable(maadaniyah.SolPrd);
 CreateTable(maadaniyah.DMSPrd);
 CreateTable(maadaniyah.HanaPrdB);
 CreateTable(maadaniyah.HanaPrdA);
 CreateTable(maadaniyah.ECCPrd);
-CreateTable(maadaniyah.WinMGMT);
-CreateTable(maadaniyah.BoPrd);
+CreateTable(maadaniyah.BoPrd,'last');
 
-CreateTable2(service2.MAABODEVHTTP);
-CreateTable2(service2.MAABOHNADEVIDX);
+
 CreateTable2(service2.MAABOHNAPRDIDX);
 CreateTable2(service2.MAABOPRDHTTP);
-CreateTable2(service2.MAABWDEVDISP);
-CreateTable2(service2.MAABWDEVMSG);
-CreateTable2(service2.MAABWDEVGW);
-CreateTable2(service2.MAABWHNADEVIDX);
+
+
 CreateTable2(service2.MAABWHNAPRDIDX);
+CreateTable2(service2.MAABWPRDMSG);
 CreateTable2(service2.MAABWPRDGW);
 CreateTable2(service2.MAABWPRDDISP);
-CreateTable2(service2.MAABWPRDMSG);
-CreateTable2(service2.MAAECCHNADEVIDX);
-CreateTable2(service2.MAAECCHNAQASIDX);
+
 CreateTable2(service2.MAAECCPRDDISP);
 CreateTable2(service2.MAAECCPRDGW);
 CreateTable2(service2.MAAECCPRDMSG);
-CreateTable2(service2.MAAHNAPRDSYSTEMDB);
+
+CreateTable2(service2.MAAHNAPRDSSH);
 CreateTable2(service2.MAAHNAPRDIDX);
+CreateTable2(service2.MAAHNAPRDSYSTEMDB);
+
+CreateTable2(service2.MAAHNAPRDBIDX1);
+CreateTable2(service2.MAAHNAPRDBIDX2);
+CreateTable2(service2.MAAHNAPRDBIDX3);
+
 CreateTable2(service2.MAASOLPRDAPP2);
-CreateTable2(service2.MAASOLPRDDB1);
 CreateTable2(service2.MAASOLPRDAPP1);
-CreateTable2(service2.MAASOLPRDDB2);
+CreateTable2(service2.MAASOLPRDDB1);
+CreateTable2(service2.MAASOLPRDDB2,'last');
 
 
 
@@ -776,12 +769,12 @@ CreateTable2(service2.MAASOLPRDDB2);
 
 	}
 
-	const CreateTable = (arr2) => {
+	const CreateTable = (arr2,param2) => {
 	
-    // if(arr1?.length === 12)
-    // {
-    //   setArr1([])
-    // }
+    if(arr2.length === 0)
+    {
+      arr2 = [0,0,0]
+    }
 	 const countOnes = arr2.filter(value => value.value_min === "1")?.length;
 	  const totalElements = arr2.length;
 	  const percentage = ((countOnes / totalElements) * 100);
@@ -795,21 +788,34 @@ CreateTable2(service2.MAASOLPRDDB2);
 
     // }
 	  arr1.push(Number(percentage.toFixed(2)))
-	  console.log(arr1)
+	  // console.log(arr1)
 	  // if(arr1?.length === 17 || arr1?.length === 11)
-    if(arr1?.length === 17 || arr1?.length === 11)
+    if(param2 === 'last')
 	  {
+      if(customer === 'Maadaniyah')
+      {
+        setArr1(arr1.slice(-7))
+      }
+      else{
+        setArr1(arr1.slice(-9))
+      }
       
 	  	 const sum = arr1.reduce((accumulator, currentValue) => accumulator + currentValue);
 		  const avge = sum / arr1?.length;
+      console.log(arr1.length)
+      console.log(arr1)
 		  setAverage(avge)
 	  }
 
 	}
 
-  const CreateTable2 = (arr2) => {
+  const CreateTable2 = (arr2,param2) => {
 
     
+    if(arr2.length === 0)
+    {
+      arr2 = [0,0,0]
+    }
       
     
   
@@ -818,10 +824,18 @@ CreateTable2(service2.MAASOLPRDDB2);
     const percentage = ((countOnes / totalElements) * 100);
     
     arr3.push(Number(percentage.toFixed(2)))
-    console.log(arr3)
+    // console.log(arr3)
     // if(arr3?.length === 17 || arr3?.length === 11)
-    if(arr3?.length === 17 || arr3?.length === 23)
+    if(param2 === 'last')
     {
+
+      if(customer === 'Maadaniyah')
+      {
+        setArr3(arr3.slice(-19))
+      }
+      else{
+        setArr3(arr3.slice(-8))
+      }
       
        const sum = arr3.reduce((accumulator, currentValue) => accumulator + currentValue);
       const avge = sum / arr3?.length;
@@ -843,9 +857,32 @@ const rows = host?.map((i,index) =>{
     Host:i.host,
     Up:arr1[index]+'%',
     Down:(100-arr1[index]).toFixed(2)+'%',
-    Unreachable:(100-arr3[index]).toFixed(2)
+    Unreachable:(100-arr1[index]).toFixed(2)
   }
 } )
+
+const getRowClassName = (params) => {
+  const Up = params.row.Up;
+
+  const numberString = Up.replace('%', '');
+
+  // Use parseFloat to convert the string to a number
+  const numberValue = parseFloat(numberString);
+
+  // Define the CSS class based on the Up value
+  if (numberValue > 95) {
+    return styles.great; // You can define this CSS class in your styles
+  } else if (numberValue > 70 && numberValue < 95) {
+    return styles.notsogreat; // You can define this CSS class in your styles
+  }
+  else
+  {
+    return styles.worse
+  }
+
+  // Default class when no condition matches
+  return '';
+};
 
 const columns2 = [
   {
@@ -905,11 +942,16 @@ const rows2 = tservice?.map((i,index) =>{
       </div>
       </div>
 		<LoadingButton onClick={CreateValue}variant='contained' loadingPosition="start" loading={load} color='secondary'>Generate</LoadingButton>
+    <Button onClick={downloadScreenshot} variant='contained'  color='secondary' style={{marginLeft:'5px'}}>PDF</Button>
 		
+    <div ref={ref}>
+
+
+    
    
-		{clicked && <div style={{ height: 700, width: '80%',marginTop:'20px' }}>
+		{clicked && <div style={{ height: 600, width: '80%',marginTop:'20px' }}>
        <h1 style={{fontWeight:'bold',fontSize:'25px',fontFamily:'Arial, Geneva, sans-serif',marginBottom:'20px'}}>Host Availability</h1>
-       <DataGrid rows={rows} columns={columns} slots={{ toolbar: GridToolbar }} />
+       <DataGrid rows={rows} columns={columns}  getRowClassName={getRowClassName} />
        
        </div> }
 
@@ -924,14 +966,21 @@ const rows2 = tservice?.map((i,index) =>{
       layout={layout}
     />
   } 
+
+  
  
     </div>
      <h1 style={{fontWeight:'bold',fontSize:'25px',fontFamily:'Arial, Geneva, sans-serif',marginBottom:'20px'}}>Services Availability</h1>
        </>   }
+
+    
+    </div>
+
+    <div ref = {set2}>
        
     {arr3?.length !==0 && <div style={{ height: 900, width: '85%',marginTop:'20px' }}>
      
-       <DataGrid rows={rows2} columns={columns2} slots={{ toolbar:GridToolbar }}/>
+       <DataGrid rows={rows2} columns={columns2}  getRowClassName={getRowClassName}/>
        
        </div> }
 
@@ -947,7 +996,7 @@ const rows2 = tservice?.map((i,index) =>{
   } 
     </div>
   
-	
+    </div>
       
 		
 			</div>
