@@ -22,6 +22,7 @@ const Finance = () => {
     const [csvData, setCSVData] = useState([]);
     const [columns1,setColumns1] = useState([])
     const [rows1,setRows1] = useState([])
+    const [modarr,setModarr] = useState([{name:'Tab 1'}])
     const [load,setLoad] = useState(false)
     const [files,setFiles]= useState([{name:'Tab 1'}])
     const [activeDiv, setActiveDiv] = useState(null);
@@ -56,18 +57,50 @@ const Finance = () => {
     ])
     console.log( new Date(`${date[0]}`),new Date(`${date[1]}`))
   }
+const reframe = (arr1,arr2) => {
 
+  const associationMap = new Map();
+
+// Iterate through arr2 to associate items with their head values
+for (const item of arr2) {
+  const head = item.name.split("_")[1]; // Extract the head value
+  if (!associationMap.has(head)) {
+    associationMap.set(head, []);
+  }
+  associationMap.get(head).push(item);
+}
+
+// Create the final array in the desired format
+const result = arr1.map((item) => ({
+  name: item.name,
+  associate: associationMap.get(item.name.split("_")[0]) || [],
+}));
+
+return result
+  
+}
   
   const fetchData = (newdata) => {
 
     setActiveDiv(newdata.index);
 		const newdat = (customers+checkval).toLowerCase()
+    
+    let associate = (customers + 'Collection').toLowerCase()
     setLoad(true)
-    axios.post(`http://${baseurl}/action2/azurestorage`,{val:newdat,filename:newdata.i.name})
+    axios.post(`http://${baseurl}/action2/azurestorage`,{val:newdat,filename:newdata.i.name,associate:associate})
     .then(function (response) {
     
         console.log(response.data)
         const data = response.data.csvData
+    //     if(checkval === 'Invoice')
+    // {
+    //   setModarr(reframe(response.data.files,response.data.filenames))
+    //   console.log(reframe(response.data.files,response.data.filenames))
+    // }
+    // else
+    // {
+    //   setModarr(response.data.files)
+    // }
         
      
         const columns = data[0].map((header,index) => {
@@ -121,16 +154,23 @@ const Finance = () => {
     
         setLoad(true)
 		const newdat = (customers+checkval).toLowerCase()
-    axios.post(`http://${baseurl}/action2/azurestorage`,{val:newdat,filename:''})
+    let associate = (customers + 'Collection').toLowerCase()
+    axios.post(`http://${baseurl}/action2/azurestorage`,{val:newdat,filename:'',associate:associate})
 .then(function (response) {
 
     console.log(response.data)
     const data = response.data.csvData
     setFiles(response.data.files)
-    // const columns = data[0].map((header, index) =>map ({
-    //     field: `col${index}`,
-    //     headerName: header,
-    //   }));
+    if(checkval === 'Invoice')
+    {
+      setModarr(reframe(response.data.files,response.data.filenames))
+      console.log(reframe(response.data.files,response.data.filenames))
+    }
+    else
+    {
+      setModarr(response.data.files)
+    }
+    
     const columns = data[0].map((header,index) => {
         
         return (
@@ -185,12 +225,13 @@ const Finance = () => {
 
   <div className={styles.season_tabs}>
     
-    {files.map((i,index) => {
+    {modarr.map((i,index) => {
 
       return (
         <div className={styles.season_tab}>
        
-        <label for={`tab-${index}`} onClick={() => fetchData({i,index})}  className={`${styles.divItem} ${activeDiv === index ? styles.active : ''}`} >{i.name}</label>
+        <label for={`tab-${index}`} onClick={() => fetchData({i,index})}  className={`${styles.divItem} ${activeDiv === index ? styles.active : ''}`} >{i.name.split('.')[0]}  <span style={{color:'red'}}>{`${i.associate ? `(${i.associate.length})*` : ''}`}</span>
+</label>
         
         <div className={styles.season_content}>
              <Box sx={{ height: '100%', width: '100%' }}>
