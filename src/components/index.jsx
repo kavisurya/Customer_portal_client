@@ -17,3 +17,5 @@ export { default as Pie } from './Charts/Pie';
 export { default as Timeline1 } from './Charts/Timeline';
 export { default as ComplexTable } from './Charts/ComplexTable';
 export { default as ChartsHeader } from './ChartsHeader';
+export { default as Chatbot } from './Chatbot/Chatbot';
+
