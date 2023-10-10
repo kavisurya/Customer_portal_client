@@ -518,7 +518,7 @@ export const links = [
         icon: <FiCreditCard />,
       },
       {
-        name: 'Zabbix',
+        name: 'Monitor',
         icon: <FiStar />,
       },
       {
@@ -621,7 +621,7 @@ export const earningData = [
     amount: '423,39',
     percentage: '+38%',
     title: 'Sales',
-    iconColor: 'rgb(228, 106, 118)',
+    iconColor: '#E46A76',
     iconBg: 'rgb(255, 244, 229)',
 
     pcColor: 'green-600',
@@ -3067,13 +3067,52 @@ export const dropdownData = [
   },
 ];
 export const SparklineAreaData = [
-  { x: 1, yval: 2 },
-  { x: 2, yval: 6 },
-  { x: 3, yval: 8 },
-  { x: 4, yval: 5 },
-  { x: 5, yval: 10 },
-
+  { date: '2023-01-01', budget: 5000 },
+  { date: '2023-02-01', budget: 6000 },
+  { date: '2023-03-01', budget: 8000 },
+  { date: '2023-04-01', budget: 4500 },
+  { date: '2023-05-01', budget: 7500 },
+  { date: '2023-06-01', budget: 6000 },
+  { date: '2023-07-01', budget: 7000 },
+  { date: '2023-08-01', budget: 4000 },
+  { date: '2023-09-01', budget: 8500 },
+  { date: '2023-10-01', budget: 6500 },
+  { date: '2023-11-01', budget: 5500 },
+  { date: '2023-12-01', budget: 7800 },
+  { date: '2024-01-01', budget: 4800 },
+  { date: '2024-02-01', budget: 7200 },
+  { date: '2024-03-01', budget: 6800 },
+  { date: '2024-04-01', budget: 5900 },
+  { date: '2024-05-01', budget: 8700 },
+  { date: '2024-06-01', budget: 5300 },
+  { date: '2024-07-01', budget: 6200 },
+  { date: '2024-08-01', budget: 6900 },
 ];
+
+export const timelineData = [
+  {
+    date: '2023-07-10',
+    description: 'CI/CD using Jenkins',
+  },
+  {
+    date: '2023-08-25',
+    description: 'Zabbix & iTop Integration',
+  },
+  {
+    date: '2023-09-20',
+    description: 'Grafana Task',
+  },
+  {
+    date: '2023-10-02',
+    description: 'ChatBot for Portal',
+  },
+  {
+    date: '2023-10-08',
+    description: 'Working on Portal UI',
+  },
+];
+
+
 
 export const lineCustomSeries = [
   { dataSource: lineChartData[0],
@@ -3207,24 +3246,46 @@ export const events = [
 
 export const stackedplot = [
   {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',],
-    y: [100, 120, 150, 130, 160, 180, 200, 190, 220],
-    type: 'bar',
-    name: 'Product A'
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      data: [100, 120, 150, 130, 160, 180, 200, 190, 220],
+      name: 'Product A',
+    },
+    {
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      data: [80, 90, 100, 110, 120, 130, 140, 150, 160],
+      name: 'Product B',
+    },
+    {
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      data: [60, 70, 80, 90, 100, 110, 120, 130, 140],
+      name: 'Product C',
+    }
+  ];
+
+
+export const Complextable = [
+  {
+    NAME: "Marketplace",
+    STATUS: "Approved",
+    DATE: new Date(2021, 0, 24), // 24.Jan.2021
   },
   {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    y: [80, 90, 100, 110, 120, 130, 140, 150, 160],
-    type: 'bar',
-    name: 'Product B'
+    NAME: "Marketplace",
+    STATUS: "Disable",
+    DATE: new Date(2021, 11, 30), // 30.Dec.2021
   },
   {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    y: [60, 70, 80, 90, 100, 110, 120, 130, 140],
-    type: 'bar',
-    name: 'Product C'
-  }
+    NAME: "Marketplace",
+    STATUS: "Error",
+    DATE: new Date(2021, 4, 20), // 20.May.2021
+  },
+  {
+    NAME: "Marketplace",
+    STATUS: "Approved",
+    DATE: new Date(2021, 6, 12), 
+  },
 ];
+
 
 export const stackedPrimaryYAxis = {
   lineStyle: { width: 0 },

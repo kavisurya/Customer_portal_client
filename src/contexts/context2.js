@@ -216,29 +216,27 @@ const AppProvider = ({ children }) => {
 
 
 
-//  const AuthZab = (connectdata) => {
+// const AuthZab = (connectdata) => {
 
-//   fetch('http://localhost:5000/action/authzab',{
-//     method:'POST',
-//     headers:{
+//   // Perform a POST request to 'http://localhost:5000/action/authzab'
+//   fetch('http://localhost:5000/action/authzab', {
+//     method: 'POST',
+//     headers: {
 //       'Content-Type': 'application/json'
 //     },
-//   body: JSON.stringify({
-//     connectdata
+//     body: JSON.stringify({
+//       connectdata
+//     })
 //   })
-// })
-// .then(response => {
-//   console.log(response.data)
-// })
-// .catch(error => {
-//   console.log(error)
-// });
-//   }
-
- 
-
-
-
+//     .then(response => {
+//       // Handle the response (this code doesn't log the actual response data)
+//       console.log(response.data);
+//     })
+//     .catch(error => {
+//       // Handle any errors that occur during the fetch
+//       console.log(error);
+//     });
+// }
 
   return (
     <AppContext.Provider

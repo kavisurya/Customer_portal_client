@@ -1,0 +1,43 @@
+/* ComplexTable.module.css */
+
+/* Default font size */
+
+/* Media query for medium-sized screens */
+@media screen and (max-width: 768px) {
+  .complex-table {
+    font-size: 10px;
+  }
+}
+
+/* Media query for small-sized screens */
+@media screen and (max-width: 576px) {
+  .complex-table {
+    font-size: 8px;
+  }
+}
+.responsive-complex-table {
+  height: 100%; /* Set the height to 100% of its parent container */
+  overflow: auto; /* Add scrollbars if content overflows */
+}
+
+
+/* Stacked.module.css */
+.apex-chart-container {
+  width: 100%; /* Make the chart container 100% width */
+  max-width: 600px; /* Adjust the max width as needed */
+  height: 500px; /* Let the height adjust based on content */
+  margin: 0 auto; /* Center the chart horizontally */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .apex-chart-container {
+    max-width: 100%; /* Adjust for smaller screens */
+  }
+}
+
+
+/* Sparkline CSS */
+.responsive-sparkline {
+  height: 100%; /* Set the height to 100% of its parent container */
+}

@@ -1,37 +1,52 @@
-import React from 'react'
-import Plot from 'react-plotly.js';
+import React from 'react';
+import ReactApexChart from 'react-apexcharts';
+import styles from './Charts.module.css'; // Import the CSS module
 
-const Stacked = ({data,height,width}) => {
+const Stacked = ({ data }) => {
+  const options = {
+    chart: {
+      type: 'bar',
+      stacked: true,
+      toolbar: {
+        show: false,
+      },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+      },
+    },
+    xaxis: {
+      categories: data[0].x,
+      labels: {
+        show: false,
+      },
+    },
+    yaxis: {
+      show: false,
+    },
+    legend: {
+      show: true,
+      position: 'top',
+      horizontalAlign: 'left',
+      offsetX: 40,
+    },
+    fill: {
+      opacity: 1,
+    },
+    colors: ['#008FFB', '#00E396', '#FEB019'],
+  };
 
-const layout = {
-width: width,
-  height: height,
-  barmode: 'stack',
-  xaxis: {
-    
-    showgrid: false,
-    showticklabels: false,
-  },
-  yaxis: {
-    
-    showgrid: false,
-    showticklabels: false,
-  },
-   margin: {
-    l: 50, // left margin
-    r: 50, // right margin
-    t: 50, // top margin
-    b: 50, // bottom margin
-  },
+  return (
+    <div className={styles['apex-chart-container']}>
+      <ReactApexChart
+        options={options}
+        series={data}
+        type="bar"
+        height="100%" // Set the height to 100% for responsiveness
+      />
+    </div>
+  );
 };
 
-
-	return (
-		 <Plot
-      data={data}
-      layout={layout}
-    />
-		)
-}
-
-export default Stacked
+export default Stacked;
