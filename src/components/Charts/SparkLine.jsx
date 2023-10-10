@@ -1,52 +1,84 @@
-import React from 'react'
+import React from 'react';
+import ReactApexChart from 'react-apexcharts';
+import styles from './Charts.module.css'; // Import the CSS module
 
-import Plot from 'react-plotly.js';
-const SparkLine = ({id,height,width,color,data,type,currentColor,xaxis,yaxis}) => {
+const SparkLine = ({ data, color }) => {
+  // Extract x and y values from data
+  const xValues = data.map((item) => item.date);
+  const yValues = data.map((item) => item.budget);
 
-	const x = data.map((i) => (i.x))
-	const y = data.map((i) => (i.yval))
+  // Create a function to filter and show every 5th date label
+  const filterLabels = (value, index) => {
+    // Show the label if it's the first label or every 5th label
+    return index === 0 || (index % 5 === 0 && index < xValues.length - 1) ? value : '';
+  };
 
-	const newdata = [
-  {
-    x: x,
-    y: y,
-    type: 'scatter',
-    mode: 'lines',
-    line: { color: color },
-  },
-];
+  const options = {
+    chart: {
+      animations: {
+        enabled: false,
+      },
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+          selection: true,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          pan: true,
+          reset: true,
+        },
+      },
+    },
+    xaxis: {
+      type: 'numeric',
+      labels: {
+        show: true,
+        formatter: filterLabels, // Use the custom filterLabels function
+      },
+    },
+    yaxis: {
+      show: true,
+      labels: {
+        formatter: (value) => {
+          return value;
+        },
+      },
+    },
+    grid: {
+      show: false,
+    },
+    fill: {
+      colors: [color],
+      type: 'solid',
+      opacity: 0.5,
+    },
+    stroke: {
+      show: true,
+      curve: 'smooth',
+      colors: [color],
+      width: 2,
+    },
+    dataLabels: {
+      enabled: false,
+    },
+  };
 
-const layout = {
-  width: width,
-  height: height,
-  xaxis: {
-    
-    showgrid: false,
-    showticklabels: false,
-  },
-  yaxis: {
-    
-    showgrid: false,
-    showticklabels: false,
-  },
-   margin: {
-    l: 50, // left margin
-    r: 50, // right margin
-    t: 50, // top margin
-    b: 50, // bottom margin
-  },
+  return (
+    <div className="responsive-sparkline">
+      <ReactApexChart
+        options={options}
+        series={[
+          {
+            name: 'budget',
+            data: yValues,
+          },
+        ]}
+        type="area"
+      />
+    </div>
+  );
 };
 
-const config = {
-  autosize: false,
-};
-
-
-	return (
-
-		<Plot data={newdata} layout={layout} config={config}/>
-		
-		)
-}
-
-export default SparkLine
+export default SparkLine;

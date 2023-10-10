@@ -5,7 +5,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 
 import { useStateContext } from '../contexts/context';
 import { links } from '../data/dummy';
-import ripple from '../data/ripple.jpg'
+import ripple from '../data/ripple2.png'
 
 const Sidebar = () => {
 
@@ -20,12 +20,12 @@ const {activeMenu,setActiveMenu,screenSize,currentColor} = useStateContext();
   };
 
 	return (
-		<div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 z-10">
+		<div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 z-10" >
       {activeMenu && (
         <>
           <div className="flex justify-between items-center">
-            <Link to="/"    onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900">
-             <img src={ripple} alt='ripple' width='50px' height='50px'/> <span>KCloud</span>
+            <Link to="/"    onClick={handleCloseSideBar} className="items-center ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900">
+             <img src={ripple} alt='ripple' width='40px' height='40px'/> <span>ustoMate</span>
             </Link>
             
               <button

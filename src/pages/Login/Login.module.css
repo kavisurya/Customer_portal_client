@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 .login{
   display: flex;
@@ -13,10 +13,11 @@
   flex-direction: column;
   align-items: center;
   padding: 5%;
-
+  border: 2px solid white;
+  border: 10px;
 }
 .submit {
-
+  color: #a94c4c;
   margin: 15%;
 }
 .form {
@@ -24,31 +25,79 @@
   margin-top: 5%;
 }
 
-.left{ 
-  background:url('../../data/left.png') center; 
-  height: 100vh; 
 
+.left {
+  position: relative;
+  background: url('../../data/left.png') center;
+  height: 100vh;
   background-size: cover;
-  flex:1;
- }
-
- .right{
-  background:url('../../data/right.png') center; 
-  height: 100vh; 
-  background-size: cover;
-  text-align: center;
   flex: 1;
- }
+  mask-image: linear-gradient(to right, transparent 0%, black 0%, black 80%, transparent 100%);
+  backdrop-filter: blur(30px); /* Adjust the blur radius as needed */
+}
+
+.right {
+  position: relative;
+  background: url('../../data/right.png') center;
+  height: 100vh;
+  background-size: cover;
+  flex: 1;
+  mask-image: linear-gradient(to left, transparent 0%, black 10%, black 80%, transparent 100%);
+  backdrop-filter: blur(20px); /* Adjust the blur radius as needed */
+}
+
+
+ .LogoContent{
+    display: flex;
+    flex-direction: row;
+    margin: 27px 0px 0px 25px;
+}
+.Logo  {
+    width: 40px;
+    height: 40px;
+    margin-right: -20px;
+}
+
+.carouselImg1{
+  width:50%;
+  margin-left: 25%;
+  margin-top: 9%;
+  text-align: center;
+}
+.carouselImg2{
+  width:50%;
+  margin-left: 24%;
+  margin-top: 15%;
+  text-align: center;
+}
+.carouselImg3{
+  width:50%;
+  margin-left: 24%;
+  margin-top: 15%;
+  text-align: center;
+}
+.carouselText{
+  color: white;
+  font-family: 'Poppins',sans-serif;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.thumbs-wrapper {
+  margin-top: 20px; /* Adjust the margin as needed to create space */
+}
+
  .text1{
    color: #fff;
-   font-size: 70px;
-   justify-content: center;
+   font-size: 25px;
    font-weight: bold;
-   padding-left:5%;
-   padding-top: 17%;
-   font-family: 'Courgette', cursive;
-
- 
+   padding-left:3%;
+   padding-top: 1%;
+   font-family: 'Poppins', sans-serif;
+ }
+ .left_banner{
+  width:100%;
  }
 
  .microsoft{
@@ -69,7 +118,10 @@
   margin-left: 15%;
   
 }
-
+.main{
+  width:70%;
+  height: 70%;
+}
 .miclogo {
   width: 24px;
   height: 24px;
