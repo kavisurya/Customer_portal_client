@@ -518,7 +518,7 @@ export const links = [
         icon: <FiCreditCard />,
       },
       {
-        name: 'Zabbix',
+        name: 'Monitor',
         icon: <FiStar />,
       },
       {
@@ -600,8 +600,8 @@ export const chatData = [
 export const earningData = [
   {
     icon: <MdOutlineSupervisorAccount />,
-    amount: '39,354',
-    percentage: '-4%',
+    amount: '4',
+    percentage: '+4%',
     title: 'Customers',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
@@ -609,28 +609,28 @@ export const earningData = [
   },
   {
     icon: <BsBoxSeam />,
-    amount: '4,396',
+    amount: '7',
     percentage: '+23%',
-    title: 'Products',
+    title: 'Apps',
     iconColor: 'rgb(255, 244, 229)',
     iconBg: 'rgb(254, 201, 15)',
     pcColor: 'green-600',
   },
   {
     icon: <FiBarChart />,
-    amount: '423,39',
+    amount: '4,339',
     percentage: '+38%',
-    title: 'Sales',
-    iconColor: 'rgb(228, 106, 118)',
+    title: 'Cost',
+    iconColor: '#E46A76',
     iconBg: 'rgb(255, 244, 229)',
 
     pcColor: 'green-600',
   },
   {
     icon: <HiOutlineRefresh />,
-    amount: '39,354',
+    amount: '354 days',
     percentage: '-12%',
-    title: 'Refunds',
+    title: 'Uptime',
     iconColor: 'rgb(0, 194, 146)',
     iconBg: 'rgb(235, 250, 242)',
     pcColor: 'red-600',
@@ -3067,13 +3067,52 @@ export const dropdownData = [
   },
 ];
 export const SparklineAreaData = [
-  { x: 1, yval: 2 },
-  { x: 2, yval: 6 },
-  { x: 3, yval: 8 },
-  { x: 4, yval: 5 },
-  { x: 5, yval: 10 },
-
+  { date: '2023-01-01', budget: 5000 },
+  { date: '2023-02-01', budget: 6000 },
+  { date: '2023-03-01', budget: 8000 },
+  { date: '2023-04-01', budget: 4500 },
+  { date: '2023-05-01', budget: 7500 },
+  { date: '2023-06-01', budget: 6000 },
+  { date: '2023-07-01', budget: 7000 },
+  { date: '2023-08-01', budget: 4000 },
+  { date: '2023-09-01', budget: 8500 },
+  { date: '2023-10-01', budget: 6500 },
+  { date: '2023-11-01', budget: 5500 },
+  { date: '2023-12-01', budget: 7800 },
+  { date: '2024-01-01', budget: 4800 },
+  { date: '2024-02-01', budget: 7200 },
+  { date: '2024-03-01', budget: 6800 },
+  { date: '2024-04-01', budget: 5900 },
+  { date: '2024-05-01', budget: 8700 },
+  { date: '2024-06-01', budget: 5300 },
+  { date: '2024-07-01', budget: 6200 },
+  { date: '2024-08-01', budget: 6900 },
 ];
+
+export const timelineData = [
+  {
+    date: '2023-07-10',
+    description: 'CI/CD using Jenkins',
+  },
+  {
+    date: '2023-08-25',
+    description: 'Zabbix & iTop Integration',
+  },
+  {
+    date: '2023-09-20',
+    description: 'Knowledge Base',
+  },
+  {
+    date: '2023-10-02',
+    description: 'ChatBot for Portal',
+  },
+  {
+    date: '2023-10-08',
+    description: 'Working on Portal UI',
+  },
+];
+
+
 
 export const lineCustomSeries = [
   { dataSource: lineChartData[0],
@@ -3207,24 +3246,46 @@ export const events = [
 
 export const stackedplot = [
   {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',],
-    y: [100, 120, 150, 130, 160, 180, 200, 190, 220],
-    type: 'bar',
-    name: 'Product A'
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      data: [100, 120, 150, 130, 160, 180, 200, 190, 220],
+      name: 'Product A',
+    },
+    {
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      data: [80, 90, 100, 110, 120, 130, 140, 150, 160],
+      name: 'Product B',
+    },
+    {
+      x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      data: [60, 70, 80, 90, 100, 110, 120, 130, 140],
+      name: 'Product C',
+    }
+  ];
+
+
+export const Complextable = [
+  {
+    NAME: "Cost Management",
+    STATUS: "Completed",
+    DATE: new Date(2023, 0, 24), // 24.Jan.2021
   },
   {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    y: [80, 90, 100, 110, 120, 130, 140, 150, 160],
-    type: 'bar',
-    name: 'Product B'
+    NAME: "SLA",
+    STATUS: "Pending",
+    DATE: new Date(2023, 7, 30), // 30.Dec.2021
   },
   {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    y: [60, 70, 80, 90, 100, 110, 120, 130, 140],
-    type: 'bar',
-    name: 'Product C'
-  }
+    NAME: "Finance",
+    STATUS: "Pending",
+    DATE: new Date(2023, 4, 20), // 20.May.2021
+  },
+  {
+    NAME: "Chatbot",
+    STATUS: "Completed",
+    DATE: new Date(2023, 6, 12), 
+  },
 ];
+
 
 export const stackedPrimaryYAxis = {
   lineStyle: { width: 0 },
