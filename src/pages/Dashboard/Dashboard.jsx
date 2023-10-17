@@ -2,7 +2,7 @@ import React from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosMore } from "react-icons/io";
-
+import styles from "./Dashboard.module.css";
 
 import { Link, useNavigate } from "react-router-dom";
 import { Stacked, Pie, Button, LineChart, SparkLine, Timeline1, ComplexTable } from "../../components";
@@ -71,7 +71,7 @@ const Dashboard = () => {
                 <Grid item md={7} xs={12}>
                   <div className="bg-white h-auto dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-3 p-md-4 rounded-2xl flex-grow-1">
                     <div className="d-flex justify-content-between">
-                      <p className="font-semibold text-xl">Azure Cost - DigiVerZ</p>
+                      <p className="font-semibold text-xl">Revenue Updates</p>
                     </div>
                     <div>
                       <SparkLine data={SparklineAreaData} color={currentColor} />
@@ -81,7 +81,7 @@ const Dashboard = () => {
                 <Grid item md={5} xs={12}>
                   <div className="bg-white h-auto dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-3 p-md-4 rounded-2xl flex-grow-1">
                     <div className="d-flex justify-content-between">
-                      <p className="font-semibold text-xl">Task Status</p>
+                      <p className="font-semibold text-xl">ComplexTable</p>
                     </div>
                     <div>
                       <ComplexTable height="100%"/>
@@ -98,7 +98,7 @@ const Dashboard = () => {
         <Grid item md={8} xs={12}>
           <div className="bg-white h-auto dark:text-gray-200 dark:bg-secondary-dark-bg m-2 p-4 rounded-2xl flex-grow-1">
             <div className="flex justify-between">
-              <p className="font-semibold text-xl">AWS Cost - DigiVerZ</p>
+              <p className="font-semibold text-xl">Revenue Updates</p>
             </div>
             <div className="mt-5">
               <Stacked data={stackedplot} height={400} width={600} />
