@@ -6,7 +6,7 @@ import styles from './Aws.module.css';
 import { useNavigate,Link } from "react-router-dom";
 import { useGlobalContext } from '../../contexts/context2'
 import Post from '../../components/Post'
-import AWSImg from '../../data/aws.png'
+import AWSImg from '../../data/aws.jfif'
 import S3 from '../../data/Picture3.png'
 import Ec2 from '../../data/Picture1.png'
 import RedShift from '../../data/Picture4.png'
@@ -148,7 +148,7 @@ axios.get(`http://${baseurl}/action/aws`)
 
     </Modal>
 
-     <div className="flex m-3 flex-wrap  gap-3 ">
+     <div className="flex m-3 flex-wrap  gap-6 ">
     {aws?.map((i) => (
 				
 			<Post post={i} img={AWSImg} handleConnect={handleConnect} handleDelete={handleDelete}/>
