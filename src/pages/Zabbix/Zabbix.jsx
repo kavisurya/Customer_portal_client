@@ -4,7 +4,7 @@ import axios from 'axios';
 import {useParams,useNavigate} from 'react-router-dom'
 import { useGlobalContext } from '../../contexts/context2'
 import Post from '../../components/Post'
-import Zabbiximg from '../../data/zabbix.png'
+import Zabbiximg from '../../data/zabbix.jpeg'
 import { Header } from '../../components';
 import {Container,Button,Typography,Grid,FormControl,Select,Menu,MenuItem,InputLabel,Avatar,InputAdornment,TextField,IconButton,Modal} from '@mui/material';
 
@@ -144,7 +144,7 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixauth`,newbody)
 	return (
 		<div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
     <div className='w-full flex justify-between'>
-    <Header  title="Zabbix" bread={[{value:"Dashboard",nav:"dashboard"},{value:"Zabbix",nav:"Zabbix"}]}/>
+    <Header  title="Monitor" bread={[{value:"Dashboard",nav:"dashboard"},{value:"Monitor",nav:"Monitor"}]}/>
     <div>
      <Button onClick={handleMenuClick} variant='contained' color='secondary'>Create Report</Button>
       <Menu
@@ -173,7 +173,7 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixauth`,newbody)
       
 </div>
     </div>
-    <div className="flex m-3 flex-wrap  gap-3 ">
+    <div className="flex m-3 flex-wrap  gap-6 ">
     {zabbix?.map((i) => (
 				
 			<Post post={i} img={Zabbiximg} handleConnect={handleConnect} handleDelete={handleDelete}/>

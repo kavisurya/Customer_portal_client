@@ -6,8 +6,8 @@ import {Link,useNavigate} from "react-router-dom";
 import { VscAzure } from "react-icons/vsc";
 import { useGlobalContext } from '../../../contexts/context2'
 import Post from '../../../components/Post'
-import AWSImg from '../../../data/aws.png'
-import AzureImg from '../../../data/Azure.jpg'
+import AWSImg from '../../../data/aws.jfif'
+import AzureImg from '../../../data/azure.png'
 // import S3 from '../../data/Picture3.png'
 // import Ec2 from '../../data/Picture1.png'
 // import RedShift from '../../data/Picture4.png'

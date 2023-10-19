@@ -1,12 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import styles from './Azure.module.css';
-import AzureImg from '../../data/Azure.jpg'
+import AzureImg from '../../data/azure.png'
 import { Header } from '../../components';
 import Post from '../../components/Post';
 import { useNavigate,Link } from "react-router-dom";
 import { useGlobalContext } from '../../contexts/context2'
-import AWSImg from '../../data/aws.png'
+import AWSImg from '../../data/aws.jfif'
 import {CircularProgress} from '@mui/material';
 import S3 from '../../data/Picture3.png'
 import Ec2 from '../../data/Picture1.png'
@@ -151,7 +151,7 @@ axios.get(`http://${baseurl}/action/azure`)
         </div>
 
     </Modal>
-         <div className="flex m-3 flex-wrap  gap-3 ">
+         <div className="flex m-3 flex-wrap  gap-6 ">
     {azure?.map((i) => (
 				
 			<Post post={i} img={AzureImg} handleConnect={handleConnect} handleDelete={handleDelete} />
