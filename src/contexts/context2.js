@@ -16,7 +16,7 @@ const AppProvider = ({ children }) => {
   const [date,setDate] = useState(new Date())
   const [users,setUsers] = useState([])
 
-  const [baseurl,setBaseurl] = useState('localhost:5000')
+  const [baseurl,setBaseurl] = useState('172.17.36.71:5000')
   const [status,setStatus] = useState(false)
   const [token,setToken] = useState(null)
   const [customer,setCustomer] = useState(null)
@@ -24,6 +24,9 @@ const AppProvider = ({ children }) => {
   const [awscred,setAwscred] = useState({accesskey:'',secret:'',region:''})
   const [azurecred,setAzurecred] = useState({subscription:'',tenant:'',clientid:'',clientsecret:''})
   const [user1, load, error] = useAuthState(auth);
+
+const [slaData,setSlaData] = useState({})
+const [IDBlobName,SetIDBlobName] = useState({})
 
   const SignOut = () => {
 
@@ -240,7 +243,7 @@ const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ loading,baseurl,DeletePost,service12,setService12,customer,date,setDate,setCustomer,user,setAzurecred,azurecred,Upload,setUser,users,setAwscred,awscred,SignOut,sendEmail,setUsers,addUser,editUser,deleteUser,status,AddConnect,setToken,token,link,setLink}}
+      value={{ loading,baseurl,SetIDBlobName,IDBlobName,setSlaData,slaData,DeletePost,service12,setService12,customer,date,setDate,setCustomer,user,setAzurecred,azurecred,Upload,setUser,users,setAwscred,awscred,SignOut,sendEmail,setUsers,addUser,editUser,deleteUser,status,AddConnect,setToken,token,link,setLink}}
     >
       {children}
     </AppContext.Provider>

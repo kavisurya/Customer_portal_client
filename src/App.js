@@ -9,6 +9,8 @@ import { useStateContext } from './contexts/context';
 import { useGlobalContext } from './contexts/context2'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import {auth} from './firebase'
+import SLA from './pages/SLA/SLA';
+import SLAReport from './pages/SLA/SLAReport';
 function App() {
 
    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
@@ -128,6 +130,8 @@ console.log(JSON.parse(localStorage.getItem('myMicData'))?.user?.stsTokenManager
                  <Route path="/azuremetrics" element={<AzureMetrics />} />
                  <Route path="/AzureCost" element={<AzureCost />} />
                  <Route path="/Finance" element={<Finance />} />
+                 <Route path="/SLA" element={<SLA />} />
+                 <Route path="/SLAReport" element={<SLAReport />} />
                 
 
                 {/* apps  */}

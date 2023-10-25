@@ -1,0 +1,62 @@
+.tristate-toggle {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 150px;
+    height: 40px;
+    background-color: rgb(175, 207, 213);
+    border-radius: 15px;
+  }
+  
+  .toggle-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 20px; /* Adjust the font size as per your requirement */
+  }
+  
+  .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 33.33%;
+    height: 100%;
+    border-radius: 12px;
+    transition: all 0.3s;
+  }
+  
+  .slider.middle {
+    left: 33.33%;
+    background-color: white;
+  }
+  
+  .slider.right {
+    left: 66.66%;
+    background-color: #28a745;
+  }
+  
+  .slider.left {
+    background-color: #dc3545;
+  }
+  
+  .toggle-button.left {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    /* background-color: #dc3545; */
+  }
+  
+  /* .toggle-button.middle {
+    background-color: #ffc107;
+  } */
+  
+  .toggle-button.right {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    /* background-color: #28a745; */
+  }
+  

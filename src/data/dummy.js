@@ -536,6 +536,10 @@ export const links = [
       {
         name:'Kanban',
         icon: <BsKanban />
+      },
+      {
+        name: 'SLA',
+        icon: <GrMoney />,
       }
     ],
   },

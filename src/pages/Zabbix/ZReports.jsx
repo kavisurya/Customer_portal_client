@@ -23,8 +23,8 @@ const ZReports = () => {
 	const {token,link,customer,baseurl} = useGlobalContext()
   
 const navigate = useNavigate()
-const [host,setHost] = useState()
-const [tservice,setTService] = useState()
+const [host,setHost] = useState([])
+const [tservice,setTService] = useState([])
 const [disabled,setDisabled] = useState(true)
 const [mservice,setMService] = useState()
 const [clicked,setClicked] = useState(false)
@@ -771,12 +771,12 @@ CreateTable2(service2.MAASOLPRDDB2,'last');
 
 	const CreateTable = (arr2,param2) => {
 	
-    if(arr2.length === 0)
+    if(arr2?.length === 0)
     {
       arr2 = [0,0,0]
     }
 	 const countOnes = arr2.filter(value => value.value_min === "1")?.length;
-	  const totalElements = arr2.length;
+	  const totalElements = arr2?.length;
 	  const percentage = ((countOnes / totalElements) * 100);
 	  // if(arr3?.length === 17 || arr3?.length === 11)
     // {
@@ -802,7 +802,7 @@ CreateTable2(service2.MAASOLPRDDB2,'last');
       
 	  	 const sum = arr1.reduce((accumulator, currentValue) => accumulator + currentValue);
 		  const avge = sum / arr1?.length;
-      console.log(arr1.length)
+      console.log(arr1?.length)
       console.log(arr1)
 		  setAverage(avge)
 	  }
@@ -812,7 +812,7 @@ CreateTable2(service2.MAASOLPRDDB2,'last');
   const CreateTable2 = (arr2,param2) => {
 
     
-    if(arr2.length === 0)
+    if(arr2?.length === 0)
     {
       arr2 = [0,0,0]
     }
@@ -852,14 +852,18 @@ const columns = [
 
 const rows = host?.map((i,index) =>{
 
-  return {
-  	id:index,
-    Host:i.host,
-    Up:arr1[index]+'%',
-    Down:(100-arr1[index]).toFixed(2)+'%',
-    Unreachable:(100-arr1[index]).toFixed(2)
-  }
-} )
+  
+    return {
+      id:index,
+      Host:i?.host,
+      Up:arr1[index]+'%',
+      Down:(100-arr1[index]).toFixed(2)+'%',
+      Unreachable:(100-arr1[index]).toFixed(2)
+    }
+  
+
+  
+} ).filter(row => row.Up !== 'undefined%');
 
 const getRowClassName = (params) => {
   const Up = params.row.Up;
@@ -907,13 +911,13 @@ const rows2 = tservice?.map((i,index) =>{
 
   return {
     id:index,
-    Host:i.host,
-    Services:i.name,
+    Host:i?.host,
+    Services:i?.name,
     Up:arr3[index]+'%',
     Down:(100-arr3[index]).toFixed(2)+'%',
     Unreachable:(100-arr3[index]).toFixed(2)
   }
-} )
+} ).filter(row => row.Up !== 'undefined%');
 
 
 

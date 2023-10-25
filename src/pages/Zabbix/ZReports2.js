@@ -794,7 +794,7 @@ const ZReports2 = () => {
       Down: (100 - arr1[index]).toFixed(2) + "%",
       Unreachable: (100 - arr1[index]).toFixed(2),
     };
-  });
+  }).filter(row => row.Up !== 'undefined%')
 
   const getRowClassName = (params) => {
     const Up = params.row.Up;
@@ -848,7 +848,7 @@ const ZReports2 = () => {
       Down: (100 - arr3[index]).toFixed(2) + "%",
       Unreachable: (100 - arr3[index]).toFixed(2),
     };
-  });
+  }).filter(row => row.Up !== 'undefined%');
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">

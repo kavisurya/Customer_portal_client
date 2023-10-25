@@ -119,7 +119,7 @@ const Login = () => {
         </div>
         <div className={styles.right}>
           <Container className={styles.main} component="main" maxWidth="xs" >
-            <Paper className={styles.paper} elevation={3} style={{ width: '90%', height: '90%' }}>
+            <Paper className={styles.paper} elevation={3} style={{ width: '90%', height: '400px' }}>
               <Avatar style={{ backgroundColor: 'red'}}>
                 <LockIcon />
               </Avatar>
@@ -166,11 +166,12 @@ const Login = () => {
                 </Button>
                 <p style={{ margin: '5px', color: 'gray' ,textAlign:'center'}}>OR</p>
 
-                <button className={styles.microsoftbutton} onClick={MicroSoftLogin}>
+                
+              </form>
+              <button className={styles.microsoftbutton} onClick={MicroSoftLogin}>
                   <img src={MicIcon} alt="Microsoft logo" className={styles.miclogo} />
                   <span className={styles.microsofttext}>Sign in with Microsoft</span>
                 </button>
-              </form>
             </Paper>
           </Container>
         </div>

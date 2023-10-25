@@ -5,6 +5,7 @@
   flex-wrap: wrap;
   background-color:beige;
   width: 100%;
+  
  }
 
 .paper {
@@ -15,6 +16,7 @@
   padding: 5%;
   border: 2px solid white;
   border: 10px;
+  padding-bottom: 10%;
 }
 .submit {
   color: #a94c4c;
@@ -115,7 +117,8 @@
   font-size: 16px;
   font-weight: 500;
   padding: 12px 16px;
-  margin-left: 15%;
+  
+  
   
 }
 .main{
