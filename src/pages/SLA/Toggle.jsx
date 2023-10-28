@@ -47,7 +47,7 @@ const Togglecomponent = (props) => {
 
   const accountName = 'customersladata';
   const containerName = 'sla-reports';
-  const sasToken = '?sp=racwdli&st=2023-10-14T13:18:17Z&se=2023-10-31T21:18:17Z&sv=2022-11-02&sr=c&sig=CHDTZjyqMzeUn%2BV7dImkr6DYGWGZslC2eyjVHcq4mHo%3D';
+  const sasToken = '?sp=racwdli&st=2023-10-28T11:57:47Z&se=2024-09-30T19:57:47Z&sv=2022-11-02&sr=c&sig=%2B%2BGLxhrfidGVSfVPfVonDm85bdOlMo%2FfJOQYwpGoEto%3D';
 
 
   const uploadToAzureBlob = async (pdfContent) => {
@@ -76,7 +76,7 @@ const Togglecomponent = (props) => {
   const updateblob = async (data) => {
     const accountName = 'customersladata';
     const containerName = 'testing';
-    const sasToken = '?sp=racwdli&st=2023-10-05T10:36:54Z&se=2023-10-31T18:36:54Z&sv=2022-11-02&sr=c&sig=V1VC34TgY3dGRXpbOIrXgFBqD4KvrelL0ZTjmByqISc%3D';
+    const sasToken = '?sp=racwdli&st=2023-10-28T11:52:35Z&se=2024-09-30T19:52:35Z&sv=2022-11-02&sr=c&sig=QBk0AU1gCn7Q0lPuGxMX47TJBiYzQflvrOojP7ch20E%3D';
     // Get a reference to the blob
     console.log("inside-update--",data)
     const blobServiceClient = new BlobServiceClient(
@@ -217,7 +217,7 @@ const handlerejectapprove = async (rowdata) => {
   const handleRightClick = () => {
     if (position !== "right") {
       setOpen(true)
-      // setPosition("right");
+      setPosition("right");
     }
   };
 

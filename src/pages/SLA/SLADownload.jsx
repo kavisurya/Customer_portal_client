@@ -90,13 +90,23 @@ const styles = StyleSheet.create({
   },
   BoldText: {
     fontFamily: "Open Sans",
-    alignSelf: "center",
-    padding: 5,
+    
+    fontSize:10,
+    padding:2
+    
+  },
+  BoldText2: {
+    fontFamily: "Open Sans",
+    padding: 2,
+    fontSize: 10,
   },
   PageTwoText: {
     fontSize: 14,
     margin: 5,
     marginTop: 20,
+    fontFamily: "Open Sans",
+    alignSelf: "center",
+    padding: 5,
   },
   table: {
     
@@ -106,6 +116,16 @@ const styles = StyleSheet.create({
     fontFamily: "Open Sans",
     alignSelf: "center",
     fontSize: 10,
+    backgroundColor: '#333', 
+    color: '#fff', 
+    padding: 8,
+
+  },
+  headerCell2: {
+    fontFamily: "Open Sans",
+    alignSelf: "center",
+    fontSize: 10,
+    width: "20%",
     backgroundColor: '#333', 
     color: '#fff', 
     padding: 8,
@@ -171,7 +191,7 @@ const MyDocument = (props) => {
       sections.push(rows.slice(currentIndex, currentIndex + 18));
       currentIndex += 15;
     }
-  
+  console.log(sections)
     return sections;
   };
 
@@ -189,10 +209,57 @@ const MyDocument = (props) => {
       sections2.push(rows1.slice(currentIndex, currentIndex + 18));
       currentIndex += 15;
     }
-    // console.log(sections2)
+    console.log(sections2)
   
     return sections2;
   };
+
+  const calculateColumnWidths = (sections,columns1) => {
+
+    const columnWidths = {};
+
+ // Initialize columnWidths with default values
+
+    columns1.forEach((column) => {
+
+      columnWidths[column.dataKey] = column.label.length;
+
+    });
+
+  // Calculate the maximum width based on header and data values
+
+    sections.forEach((section) => {
+
+      section.forEach((row) => {
+
+        columns1.forEach((column) => {
+
+          const content = row[column.dataKey].toString();
+
+          const contentWidth = content.length;
+
+          const headerWidth = column.label.length;
+
+          const maxWidth = Math.max(contentWidth, headerWidth);
+         if (maxWidth > columnWidths[column.dataKey]) {
+
+            columnWidths[column.dataKey] = maxWidth;
+
+          }
+
+        });
+
+      });
+
+    });
+
+ 
+
+    return columnWidths;
+
+  };
+
+ 
 
   
   
@@ -258,6 +325,9 @@ const MyDocument = (props) => {
   // }
   const sections = splitRowsIntoSections(slicedSARows);
   const sections2 = splitRowsIntoSections2(slicedHARows);
+
+  const columnWidth1 = calculateColumnWidths(sections2,columns1);
+  const columnWidth2 = calculateColumnWidths(sections,columns2);
   
   return (
   <Document>
@@ -271,9 +341,9 @@ const MyDocument = (props) => {
                   <Text style={styles.Headertext}>
                     {props.row.customer} - SLA Report 
                   </Text>
-                  {/* <Text style={styles.Headertext}>
-                    {props.row.customer}
-                  </Text> */}
+                  <Text style={styles.Headertext}>
+                    {props.row.titleCard}
+                  </Text>
                 </View>
                 <View style={styles.HeadingLine} />
                 <View style={styles.infoBox}>
@@ -294,10 +364,13 @@ const MyDocument = (props) => {
                       <View style={styles.TopLine} />
                       <View style={styles.section}>
                         <Text style={styles.PageTwoText}>
-                          <Text style={styles.BoldText}>
+                        
                             SERVER AVAILABILITY
-                          </Text>{" "}
-                          (Report covers from 01/09/2023 - 30/09/2023)
+                         
+                         
+                        </Text >
+                        <Text style={styles.BoldText}>
+                        (Report covers from {props.row.fromData.split(' GMT')[0]} to {props.row.toDate.split(' GMT')[0]})
                         </Text>
                       </View>
                       <View>
@@ -323,6 +396,7 @@ const MyDocument = (props) => {
                       <TableHeader>
                         {columns1.map((header) => (
                           <TableCell
+                          weighting={columnWidth1[header.dataKey]}
                             style={styles.headerCell}
                             key={header.dataKey}
                           >
@@ -333,6 +407,7 @@ const MyDocument = (props) => {
                       <TableBody>
                         {columns1.map((header) => (
                           <DataTableCell
+                            weighting={columnWidth1[header.dataKey]}
                             style={styles.cell}
                             key={header.dataKey}
                             getContent={(r) => r[header.dataKey]}
@@ -340,7 +415,11 @@ const MyDocument = (props) => {
                         ))}
                       </TableBody>
                     </Table>
+                   
                   </View>
+                {index === sections2.length-1 &&  <Text style={styles.BoldText2}>
+                           Average : {props.row.HostAverageAvailability.toFixed(2)}%
+                    </Text>}
                 </View>
               </Page>
             ))}
@@ -355,12 +434,15 @@ const MyDocument = (props) => {
                     <View>
                       <View style={styles.TopLine} />
                       <View style={styles.section}>
-                        <Text style={styles.PageTwoText}>
-                          <Text style={styles.BoldText}>
-                            APPLICATION SERVICES AVAILABILITY
-                          </Text>{" "}
-                          (Report covers from 01/09/2023 - 30/09/2023)
-                        </Text>
+                      <Text style={styles.PageTwoText}>
+                        
+                        APPLICATION SERVICES AVAILABILITY
+                     
+                     
+                    </Text >
+                    <Text style={styles.BoldText}>
+                    (Report covers from {props.row.fromData.split(' GMT')[0]} to {props.row.toDate.split(' GMT')[0]})
+                    </Text>
                       </View>
                       <View>
                         <Text >
@@ -385,7 +467,8 @@ const MyDocument = (props) => {
                       <TableHeader>
                         {columns2.map((header) => (
                           <TableCell
-                            style={styles.headerCell}
+                            style={header.label==='Services'?styles.headerCell2:styles.headerCell}
+                            weighting={columnWidth2[header.dataKey]}
                             key={header.dataKey}
                           >
                             {header.label}
@@ -395,6 +478,7 @@ const MyDocument = (props) => {
                       <TableBody>
                         {columns2.map((header) => (
                           <DataTableCell
+                            weighting={columnWidth2[header.dataKey]}
                             style={styles.cell}
                             key={header.dataKey}
                             getContent={(r) => r[header.dataKey]}
@@ -402,8 +486,13 @@ const MyDocument = (props) => {
                         ))}
                       </TableBody>
                     </Table>
+                    
                   </View>
+                  {index === sections.length-1 &&<Text style={styles.BoldText2}>
+                           Average : {props.row.ServiceAverageAvailability.toFixed(2)}%
+                    </Text>}
                 </View>
+              
               </Page>
             ))}
 

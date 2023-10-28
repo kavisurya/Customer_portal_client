@@ -36,7 +36,7 @@ const SLA = () => {
     const [IdblobName, setIdblobName] = useState({})
     const accountName = 'customersladata';
     const containerName = 'testing';
-    const sasToken = '?sp=racwdli&st=2023-10-05T10:36:54Z&se=2023-10-31T18:36:54Z&sv=2022-11-02&sr=c&sig=V1VC34TgY3dGRXpbOIrXgFBqD4KvrelL0ZTjmByqISc%3D';
+    const sasToken = '?sp=racwdli&st=2023-10-28T11:52:35Z&se=2024-09-30T19:52:35Z&sv=2022-11-02&sr=c&sig=QBk0AU1gCn7Q0lPuGxMX47TJBiYzQflvrOojP7ch20E%3D';
 
 
     const [allData, setAllData] = useState([]);
