@@ -56,13 +56,19 @@ function Chatbot() {
     
     setChats(prevChats => [...prevChats, { role: "bot", content: "", class: "typing" }]);
     
-    axios.post(`http://${baseurl}/action3/ask`, { question: message })
+    axios.post(`http://localhost:8000/chat`, { user_input: message }, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other headers if needed
+      },
+      })
       .then((response) => {
         // Check if the response is an object
-        if (response.data && typeof response.data === 'object' && response.data.answer) {
+        console.log(response)
+        if (response.data && typeof response.data === 'object') {
           setChats(prevChats => {
             let newChats = [...prevChats];
-            newChats[newChats.length - 1] = response.data.answer;
+            newChats[newChats.length - 1] = { role: "bot", content: response.data.Response }
             return newChats;
           });
         } else {

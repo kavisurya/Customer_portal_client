@@ -126,6 +126,11 @@ const handlerejectapprove = async (rowdata) => {
           console.log(error)
       })
 }
+const delay = ms => new Promise(
+
+  resolve => setTimeout(resolve, ms)
+
+);
 
 
   useEffect(() => {
@@ -143,6 +148,7 @@ const handlerejectapprove = async (rowdata) => {
 
 
   useEffect(() => {
+    async function makeRequest(){
     // console.log("upload status updated")
     console.log('prestate', prestate)
     console.log('position', position)
@@ -172,6 +178,7 @@ const handlerejectapprove = async (rowdata) => {
     if ((prestate === "New" || prestate === "reject") && (position === "right")) {
 
       setUploadPdf(true)
+      await delay(1000)
 
     }
 
@@ -181,10 +188,11 @@ const handlerejectapprove = async (rowdata) => {
       // const result = updateblob(rowdata)
       handlerejectapprove(rowdata)
     }
-
+  }
+  makeRequest();
   }, [position]);
 
-
+ 
 
 
 
@@ -217,7 +225,7 @@ const handlerejectapprove = async (rowdata) => {
   const handleRightClick = () => {
     if (position !== "right") {
       setOpen(true)
-      setPosition("right");
+      // setPosition("right");
     }
   };
 

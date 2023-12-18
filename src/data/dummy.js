@@ -510,7 +510,7 @@ export const links = [
     title: 'Apps',
     links: [
       {
-        name: 'calendar',
+        name: 'EventManagement',
         icon: <AiOutlineCalendar />,
       },
       {
@@ -534,7 +534,7 @@ export const links = [
         icon: <FaQuora />
       },
       {
-        name:'Kanban',
+        name:'Tasks',
         icon: <BsKanban />
       },
       {
@@ -3275,7 +3275,7 @@ export const Complextable = [
   },
   {
     NAME: "SLA",
-    STATUS: "Pending",
+    STATUS: "Completed",
     DATE: new Date(2023, 7, 30), // 30.Dec.2021
   },
   {

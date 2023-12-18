@@ -137,12 +137,12 @@ console.log(JSON.parse(localStorage.getItem('myMicData'))?.user?.stsTokenManager
                 {/* apps  */}
                 <Route path="/Ansible" element={<Ansible />} />
                 <Route path="/Monitor" element={<Zabbix />} />
-                <Route path="/calendar" element={<Calender />} />
+                <Route path="/EventManagement" element={<Calender />} />
                 <Route path="/Kibana" element={<Kibana />} />
                 <Route path="/aws" element={<AWS />} />
                 <Route path="/Azure" element={<Azure />} />
                 <Route path="/FAQ" element={<FAQ />} />
-                <Route path="/Kanban" element={<Kanban />} />
+                <Route path="/Tasks" element={<Kanban />} />
 
 
                 {/* charts  */}

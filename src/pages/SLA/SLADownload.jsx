@@ -108,10 +108,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     padding: 5,
   },
-  table: {
-    
-    backgroundColor: 'white', 
-  },
   headerCell: {
     fontFamily: "Open Sans",
     alignSelf: "center",
@@ -373,12 +369,12 @@ const MyDocument = (props) => {
                         (Report covers from {props.row.fromData.split(' GMT')[0]} to {props.row.toDate.split(' GMT')[0]})
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginLeft:100}}>
                         <Text>
                           <Text style={{alignContent:"center"}} >
                             <Image
                               src={chartImage}
-                              style={{ width: 300, height: 300 }}
+                              style={{ width: 350, height: 350}}
                             />
                           </Text>
                           {/* <Text style={{ flex: 1 }}>
@@ -391,7 +387,9 @@ const MyDocument = (props) => {
                       </View>
                     </View>
                   )}
-                  <View wrap style={styles.table}>
+                  <View wrap style={{
+    marginTop: index === 0 ? -50 : 0 // Replace 'condition' with your actual condition
+  }}>
                     <Table data={section}>
                       <TableHeader>
                         {columns1.map((header) => (
@@ -444,12 +442,12 @@ const MyDocument = (props) => {
                     (Report covers from {props.row.fromData.split(' GMT')[0]} to {props.row.toDate.split(' GMT')[0]})
                     </Text>
                       </View>
-                      <View>
+                      <View style={{marginLeft:100}}>
                         <Text >
                           <Text>
                             <Image
                               src={chartImage2}
-                              style={{ width: 300, height: 300,marginLeft:'50px' }}
+                              style={{ width: 350, height: 350,}}
                             ></Image>
                           </Text>
                           {/* <Text style={{ flex: 1 }}>
@@ -462,7 +460,9 @@ const MyDocument = (props) => {
                       </View>
                     </View>
                   )}
-                  <View wrap style={styles.table}>
+                  <View wrap style={{
+    marginTop: index === 0 ? -50 : 0 // Replace 'condition' with your actual condition
+  }}>
                     <Table data={section}>
                       <TableHeader>
                         {columns2.map((header) => (

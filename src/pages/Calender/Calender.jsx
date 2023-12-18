@@ -77,7 +77,7 @@ const CalendarApp = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header title="Calendar" bread={[{ value: "Dashboard", nav: "dashboard" }, { value: "Calendar", nav: "calendar" }]} />
+      <Header title="EventManagement" bread={[{ value: "Dashboard", nav: "dashboard" }, { value: "EventManagement", nav: "EventManagement" }]} />
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
         <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={openModal}>

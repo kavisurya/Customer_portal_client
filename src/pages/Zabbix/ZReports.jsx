@@ -65,13 +65,24 @@ let requestBody4
 const arr33 = [100,100,99,100,98,100,100,100,100,100,100]
 const [service1, setService1] = useState({
   SPFMRNAPRDSQL: [],
-  SPFPOPRDNIMSH: [],
-  SPFPOPRDDISP: [],
-  SPFPOPRDJAVA: [],
-  SPFPOPRDGATEWAY: [],
-  SPFPOPRDSMTP: [],
-  SPFDMSPRDDMS: [],
-  SPFPOWBISQL: [],
+SPFPOPRDNIMSH: [],
+SPFPOPRDDISP: [],
+SPFPOPRDJAVA: [],
+SPFPOPRDGATEWAY: [],
+SPFPOPRDSMTP: [],
+SPFDMSPRDDMS: [],
+SPFPOWBISQL: [],
+SPFECCPRDORACLE: [/* array of objects matching '60753' */],
+SPFAPPRPRDHTTPS1: [/* array of objects matching '60792' */],
+SPFMRNAPRDSQL: [/* array of objects matching '53152' */],
+SPFPOPRDNIMSH: [/* array of objects matching '53106' */],
+SPFPOPRDDISP: [/* array of objects matching '53108' */],
+SPFPOPRDJAVA: [/* array of objects matching '53113' */],
+SPFPOPRDGATEWAY: [/* array of objects matching '53110' */],
+SPFPOPRDSMTP: [/* array of objects matching '53115' */],
+SPFDMSPRDDMS: [/* array of objects matching '53125' */],
+SPFPOWBISQL: [/* array of objects matching '53167' */],
+SPFECCPRDDISPATCHER: [/* array of objects matching '60750' */],
  
 });
 const [service2, setService2] = useState({
@@ -260,10 +271,7 @@ jsonrpc: "2.0",
 method: "trend.get",
 params: {
 output: "extend",
-itemids: [
-     "53167", "53125", "53115",
-     "53110", "53113", "53108", "53106", "53152"
-],
+itemids: ["60795", "60797", "60802", "60752", "53125", "60269", "60753", "60792", "53152", "60793", "60751", "53167", "53115", "53110", "53113", "53108", "60803", "53106", "60750"],
 time_from: from ? from : '1693566435',
 time_till:to?to:'1695208035',
 },
@@ -391,14 +399,25 @@ axios.post(`http://${baseurl}/actionzabbix/zabbixhosts`,newbody2)
     {
       setService1(prevState => ({
 ...prevState,
-SPFPOWBISQL: data.filter((i) => i.itemid === '53167'),
+SPFEYPRDHTTP: data.filter((i) => i.itemid === '60795'),
+SPFTAXPRDHTTP: data.filter((i) => i.itemid === '60797'),
+SPFTAXDBPRDPOSTGRES: data.filter((i) => i.itemid === '60802'),
+SPFECCPRDMESSAGE: data.filter((i) => i.itemid === '60752'),
 SPFDMSPRDDMS: data.filter((i) => i.itemid === '53125'),
+SPFPOPRDDATABASE: data.filter((i) => i.itemid === '60269'),
+SPFECCPRDORACLE: data.filter((i) => i.itemid === '60753'),
+SPFAPPRPRDHTTPS1: data.filter((i) => i.itemid === '60792'),
+SPFMRNAPRDSQL: data.filter((i) => i.itemid === '53152'),
+SPFAPPRPRDHTTPS2: data.filter((i) => i.itemid === '60793'),
+SPFECCPRDGATEWAY: data.filter((i) => i.itemid === '60751'),
+SPFPOWBISQL: data.filter((i) => i.itemid === '53167'),
 SPFPOPRDSMTP: data.filter((i) => i.itemid === '53115'),
 SPFPOPRDGATEWAY: data.filter((i) => i.itemid === '53110'),
 SPFPOPRDJAVA: data.filter((i) => i.itemid === '53113'),
 SPFPOPRDDISP: data.filter((i) => i.itemid === '53108'),
+SPFTAXDBPRDSSH: data.filter((i) => i.itemid === '60803'),
 SPFPOPRDNIMSH: data.filter((i) => i.itemid === '53106'),
-SPFMRNAPRDSQL: data.filter((i) => i.itemid === '53152'),
+SPFECCPRDDISPATCHER: data.filter((i) => i.itemid === '60750')
 }));
     }
     else{
@@ -687,14 +706,25 @@ else{
     CreateTable(tanmiah.EccPrd,'last')
 
 
-CreateTable2(service1.SPFPOWBISQL);
+CreateTable2(service1.SPFAPPRPRDHTTPS1);
+CreateTable2(service1.SPFAPPRPRDHTTPS2);
 CreateTable2(service1.SPFDMSPRDDMS);
+CreateTable2(service1.SPFECCPRDMESSAGE);
+CreateTable2(service1.SPFECCPRDORACLE);
+CreateTable2(service1.SPFECCPRDGATEWAY);
+CreateTable2(service1.SPFECCPRDDISPATCHER);
+CreateTable2(service1.SPFEYPRDHTTP);
+CreateTable2(service1.SPFMRNAPRDSQL);
+CreateTable2(service1.SPFPOPRDDATABASE);
 CreateTable2(service1.SPFPOPRDSMTP);
 CreateTable2(service1.SPFPOPRDGATEWAY);
 CreateTable2(service1.SPFPOPRDJAVA);
 CreateTable2(service1.SPFPOPRDDISP);
 CreateTable2(service1.SPFPOPRDNIMSH);
-CreateTable2(service1.SPFMRNAPRDSQL,'last');
+CreateTable2(service1.SPFPOWBISQL);
+CreateTable2(service1.SPFTAXDBPRDPOSTGRES);
+CreateTable2(service1.SPFTAXDBPRDSSH);
+CreateTable2(service1.SPFTAXPRDHTTP,'last');
 
 
     }
@@ -834,7 +864,7 @@ CreateTable2(service2.MAASOLPRDDB2,'last');
         setArr3(arr3.slice(-19))
       }
       else{
-        setArr3(arr3.slice(-8))
+        setArr3(arr3.slice(-19))
       }
       
        const sum = arr3.reduce((accumulator, currentValue) => accumulator + currentValue);

@@ -50,7 +50,7 @@ const initEvent = useMemo(() => [
 
 	return (
 		<div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-   <Header  title="Kanban" bread={[{value:"Dashboard",nav:"dashboard"},{value:"Kanban",nav:"Kanban"}]} />
+   <Header  title="Task Management" bread={[{value:"Dashboard",nav:"dashboard"},{value:"Kanban",nav:"Kanban"}]} />
     <div className='App'>
       {/*<EventBar
         events={events}
